@@ -37,4 +37,10 @@ Makefile*
 CMakeLists.txt.user*
 
 # Build
-build
+temp
+bin
+
+# Windows
+Thumbs.db
+
+

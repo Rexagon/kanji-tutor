@@ -11,14 +11,33 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // Menu actions
+    createMenu();
+
+    createStartPage();
+    createCategoryPage();
+    createLessonPage();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::createMenu()
+{
+    // File menu
     connect(ui->menuItemExit, &QAction::triggered, this, [this]() {
         this->close();
     });
+
+    // Help menu
     connect(ui->menuItemAbout, &QAction::triggered, this, [this]() {
         QMessageBox::about(this, "О программе", "Нечто неопределённое, созданные чтобы помочь изучить иероглифы методом простой зубрёжки и тестов.");
     });
+}
 
+void MainWindow::createStartPage()
+{
     // Elementary
     QGridLayout* elementaryGridLayout = new QGridLayout();
 
@@ -37,21 +56,27 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     ui->widgetPrimary->setLayout(primaryGridLayout);
-
-
 }
 
-MainWindow::~MainWindow()
+void MainWindow::createCategoryPage()
 {
-    delete ui;
+    connect(ui->buttonBack, &QPushButton::pressed, this, [this]() {
+        ui->stackedWidget->setCurrentIndex(StartPage);
+    });
+}
+
+void MainWindow::createLessonPage()
+{
+    //TODO: create lesson page
 }
 
 QPushButton *MainWindow::createCategoryButton(const QString &text, int id)
 {
     QPushButton* button = new QPushButton(QString::number(id) + "\n" + text);
 
-    connect(button, &QPushButton::pressed, this, [id, this]() {
-        ui->stackedWidget->setCurrentIndex(1);
+    connect(button, &QPushButton::pressed, this, [id, text, this]() {
+        ui->stackedWidget->setCurrentIndex(CategoryPage);
+        ui->labelCategoryName->setText(text + " " + QString::number(id));
     });
 
     button->setFont(QFont("Verdana", 10, 10));
