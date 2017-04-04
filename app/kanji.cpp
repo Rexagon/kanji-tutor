@@ -1,5 +1,29 @@
 #include "kanji.h"
 
+#include <QJsonArray>
+
+#include <QDebug>
+
+Kanji::Kanji(const QJsonObject &json)
+{
+    m_symbol = json["s"].toString();
+
+    QJsonArray onyomi = json["on"].toArray();
+    for (int i = 0; i < onyomi.size(); ++i) {
+        m_onyomi.push_back(onyomi[i].toString());
+    }
+
+    QJsonArray kunyomi = json["kun"].toArray();
+    for (int i = 0; i < kunyomi.size(); ++i) {
+        m_kunyomi.push_back(kunyomi[i].toString());
+    }
+
+    QJsonArray translations = json["t"].toArray();
+    for (int i = 0; i < translations.size(); ++i) {
+        m_translations.push_back(translations[i].toString());
+    }
+}
+
 Kanji::Kanji(const QString &symbol) :
     m_symbol(symbol)
 {
@@ -9,25 +33,6 @@ Kanji::Kanji(const QString &symbol) :
 QString Kanji::getSymbol() const
 {
     return m_symbol;
-}
-
-
-void Kanji::addKunyomi(const QString &kunyomi)
-{
-    m_kunyomi.push_back(kunyomi);
-}
-
-bool Kanji::hasKunyomi(const QString &kunyomi) const
-{
-    for (unsigned int i = 0; i < m_kunyomi.size(); ++i) {
-        if (m_kunyomi[i] == kunyomi) return true;
-    }
-    return false;
-}
-
-std::vector<QString> Kanji::getKunyomi() const
-{
-    return m_kunyomi;
 }
 
 
@@ -47,6 +52,25 @@ bool Kanji::hasOnyomi(const QString &onyomi) const
 std::vector<QString> Kanji::getOnyomi() const
 {
     return m_onyomi;
+}
+
+
+void Kanji::addKunyomi(const QString &kunyomi)
+{
+    m_kunyomi.push_back(kunyomi);
+}
+
+bool Kanji::hasKunyomi(const QString &kunyomi) const
+{
+    for (unsigned int i = 0; i < m_kunyomi.size(); ++i) {
+        if (m_kunyomi[i] == kunyomi) return true;
+    }
+    return false;
+}
+
+std::vector<QString> Kanji::getKunyomi() const
+{
+    return m_kunyomi;
 }
 
 

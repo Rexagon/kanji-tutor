@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 
+#include "group.h"
+
 namespace Ui {
     class MainWindow;
 }
@@ -22,15 +24,19 @@ private:
         LessonPage
     };
 
+    void loadData();
+
     void createMenu();
 
     void createStartPage();
     void createCategoryPage();
     void createLessonPage();
 
-    QPushButton* createCategoryButton(const QString& text, int id);
+    QPushButton* createCategoryButton(Category* category);
 
     Ui::MainWindow *ui;
+
+    std::vector<std::unique_ptr<Group>> m_groups;
 };
 
 #endif // MAINWINDOW_H

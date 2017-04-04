@@ -42,61 +42,40 @@
      </rect>
     </property>
     <widget class="QWidget" name="page">
-     <widget class="QWidget" name="widgetElementary" native="true">
+     <widget class="QScrollArea" name="groupsScrollArea">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>30</y>
-        <width>381</width>
-        <height>185</height>
+        <x>9</x>
+        <y>0</y>
+        <width>391</width>
+        <height>481</height>
        </rect>
       </property>
-     </widget>
-     <widget class="QWidget" name="widgetPrimary" native="true">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>250</y>
-        <width>381</width>
-        <height>185</height>
-       </rect>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
       </property>
-     </widget>
-     <widget class="QLabel" name="labelElementary">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>371</width>
-        <height>21</height>
-       </rect>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
       </property>
-      <property name="text">
-       <string>Начальная школа</string>
+      <property name="widgetResizable">
+       <bool>true</bool>
       </property>
-     </widget>
-     <widget class="QLabel" name="labelPrimary">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>230</y>
-        <width>371</width>
-        <height>21</height>
-       </rect>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Средняя школа</string>
-      </property>
+      <widget class="QWidget" name="widgetScrollArea">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>374</width>
+         <height>481</height>
+        </rect>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="page_2">

@@ -2,22 +2,25 @@
 #define KANJI_H
 
 #include <vector>
+
+#include <QJsonObject>
 #include <QString>
 
 class Kanji
 {
 public:
+    Kanji(const QJsonObject& json);
     Kanji(const QString& symbol);
 
     QString getSymbol() const;
 
-    void addKunyomi(const QString& kunyomi);
-    bool hasKunyomi(const QString& kunyomi) const;
-    std::vector<QString> getKunyomi() const;
-
     void addOnyomi(const QString& onyomi);
     bool hasOnyomi(const QString& onyomi) const;
     std::vector<QString> getOnyomi() const;
+
+    void addKunyomi(const QString& kunyomi);
+    bool hasKunyomi(const QString& kunyomi) const;
+    std::vector<QString> getKunyomi() const;
 
     void addTranslation(const QString& translation);
     bool hasTranslation(const QString& translation) const;

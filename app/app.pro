@@ -21,9 +21,15 @@ MOC_DIR = obj
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    kanji.cpp
+    kanji.cpp \
+    category.cpp \
+    lesson.cpp \
+    group.cpp
 
 HEADERS  += mainwindow.h \
-    kanji.h
+    kanji.h \
+    category.h \
+    lesson.h \
+    group.h
 
 FORMS    += mainwindow.ui
