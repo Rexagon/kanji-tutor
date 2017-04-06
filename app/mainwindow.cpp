@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <QFile>
 
+#include <cmath>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
