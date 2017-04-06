@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "kanji.h"
+#include "hieroglyph.h"
 
 class Lesson
 {
@@ -14,11 +14,11 @@ public:
 
     QString getName() const;
 
-    std::vector<Kanji*> getKanji() const;
+    std::vector<Hieroglyph*> getKanji() const;
 private:
     QString m_name;
 
-    std::vector<std::unique_ptr<Kanji>> m_kanji;
+    std::vector<std::unique_ptr<Hieroglyph>> m_kanji;
 };
 
 #endif // LESSON_H

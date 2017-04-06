@@ -32,7 +32,7 @@
    <string>Kanji tutor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QStackedWidget" name="stackedWidget">
+   <widget class="QStackedWidget" name="pageSelector">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -41,8 +41,8 @@
       <height>481</height>
      </rect>
     </property>
-    <widget class="QWidget" name="page">
-     <widget class="QScrollArea" name="groupsScrollArea">
+    <widget class="QWidget" name="startPageWidget">
+     <widget class="QScrollArea" name="startPageScrollArea">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -66,20 +66,20 @@
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
-      <widget class="QWidget" name="widgetScrollArea">
+      <widget class="QWidget" name="startPageScrollWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>377</width>
+         <width>374</width>
          <height>481</height>
         </rect>
        </property>
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_2">
-     <widget class="QPushButton" name="buttonBackToStart">
+    <widget class="QWidget" name="categoryPageWidget">
+     <widget class="QPushButton" name="categoryPageBackButton">
       <property name="geometry">
        <rect>
         <x>320</x>
@@ -92,7 +92,7 @@
        <string>Назад</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelCategoryName">
+     <widget class="QLabel" name="categoryPageNameLabel">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -119,16 +119,16 @@
         <height>31</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="categoryPageGridLayout">
        <item row="0" column="0">
-        <widget class="QPushButton" name="buttonAllKanjiList">
+        <widget class="QPushButton" name="categoryPageAllKanjiButton">
          <property name="text">
           <string>Список всех иероглифов</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPushButton" name="buttonAllTests">
+        <widget class="QPushButton" name="categoryPageTestsButton">
          <property name="text">
           <string>Тесты для проверки</string>
          </property>
@@ -136,7 +136,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="Line" name="line">
+     <widget class="Line" name="categoryPageLine">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -149,7 +149,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QListWidget" name="lessonsList">
+     <widget class="QListWidget" name="categoryPageLessonsList">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -160,8 +160,8 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_3">
-     <widget class="QPushButton" name="buttonBackToCategory">
+    <widget class="QWidget" name="lessonPageWidget">
+     <widget class="QPushButton" name="lessonPageBackButton">
       <property name="geometry">
        <rect>
         <x>320</x>
@@ -174,7 +174,7 @@
        <string>Назад</string>
       </property>
      </widget>
-     <widget class="QLabel" name="labelLessonName">
+     <widget class="QLabel" name="lessonPageNameLabel">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -192,7 +192,7 @@
        <string>Название категории</string>
       </property>
      </widget>
-     <widget class="Line" name="line_2">
+     <widget class="Line" name="lessonPageLine">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -214,16 +214,16 @@
         <height>31</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2">
+      <layout class="QGridLayout" name="lessonPageGridLayout">
        <item row="0" column="0">
-        <widget class="QPushButton" name="buttonKanjiList">
+        <widget class="QPushButton" name="lessonPageAllKanjiButton">
          <property name="text">
           <string>Список всех иероглифов</string>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QPushButton" name="buttonTests">
+        <widget class="QPushButton" name="lessonPageTestsButton">
          <property name="text">
           <string>Тесты для проверки</string>
          </property>
@@ -231,7 +231,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QListWidget" name="kanjiList">
+     <widget class="QListWidget" name="lessonPageKanjiList">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -250,7 +250,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

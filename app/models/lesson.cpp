@@ -18,7 +18,7 @@ Lesson::Lesson(const QString &path)
 
     QJsonArray kanji = json["kanji"].toArray();
     for (int i = 0; i < kanji.size(); ++i) {
-        m_kanji.push_back(std::make_unique<Kanji>(kanji[i].toObject()));
+        m_kanji.push_back(std::make_unique<Hieroglyph>(kanji[i].toObject()));
     }
 }
 
@@ -32,9 +32,9 @@ QString Lesson::getName() const
     return m_name;
 }
 
-std::vector<Kanji*> Lesson::getKanji() const
+std::vector<Hieroglyph*> Lesson::getKanji() const
 {
-    std::vector<Kanji*> result(m_kanji.size());
+    std::vector<Hieroglyph*> result(m_kanji.size());
     for (unsigned int i = 0; i < m_kanji.size(); ++i) {
         result[i] = m_kanji[i].get();
     }

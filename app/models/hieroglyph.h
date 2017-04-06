@@ -6,11 +6,11 @@
 #include <QJsonObject>
 #include <QString>
 
-class Kanji
+class Hieroglyph
 {
 public:
-    Kanji(const QJsonObject& json);
-    Kanji(const QString& symbol);
+	Hieroglyph(const QJsonObject& json);
+	Hieroglyph(const QString& symbol);
 
     QString getSymbol() const;
 

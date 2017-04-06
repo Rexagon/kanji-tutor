@@ -5,7 +5,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 
-#include "group.h"
+#include "../models/group.h"
 
 namespace Ui {
     class MainWindow;
@@ -35,9 +35,9 @@ private:
 
 	QPushButton* createCategoryButton(Category* category);
 
-    Ui::MainWindow *ui;
+	Ui::MainWindow *ui;
 
-    std::vector<std::unique_ptr<Group>> m_groups;
+	std::vector<std::unique_ptr<Group>> m_groups;
 };
 
 #endif // MAINWINDOW_H

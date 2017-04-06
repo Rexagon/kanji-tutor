@@ -14,11 +14,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+	ui->setupUi(this);
 
     loadData();
 
-    createMenu();
+	createMenu();
 
 	createStartPage();
 }
@@ -69,7 +69,7 @@ void MainWindow::createStartPage()
 	groupsList->setAlignment(Qt::AlignTop);
 	groupsList->setContentsMargins(0, 12, 0, 0);
 	groupsList->setSizeConstraint(QLayout::SetMinimumSize);
-	ui->widgetScrollArea->setLayout(groupsList);
+	ui->startPageScrollArea->setLayout(groupsList);
 
 	for (unsigned int i = 0; i < m_groups.size(); ++i) {
 		Group* group = m_groups[i].get();
@@ -84,7 +84,7 @@ void MainWindow::createStartPage()
 
             connect(button, &QPushButton::pressed, this, [category, this]() {
                 createCategoryPage(category);
-                ui->stackedWidget->setCurrentIndex(CategoryPage);
+				ui->pageSelector->setCurrentIndex(CategoryPage);
             });
 
             button->setFont(QFont("Verdana", 10, 10));
@@ -108,13 +108,13 @@ void MainWindow::createStartPage()
 
 void MainWindow::createCategoryPage(Category* category)
 {
-    ui->labelCategoryName->setText(category->getName());
+	ui->categoryPageNameLabel->setText(category->getName());
 
-    connect(ui->buttonBackToStart, &QPushButton::pressed, this, [this]() {
-		ui->stackedWidget->setCurrentIndex(StartPage);
+	connect(ui->categoryPageBackButton, &QPushButton::pressed, this, [this]() {
+		ui->pageSelector->setCurrentIndex(StartPage);
 	});
 
-	ui->lessonsList->clear();
+	ui->categoryPageLessonsList->clear();
 
 	std::vector<Lesson*> lessons = category->getLessons();
 
@@ -130,7 +130,7 @@ void MainWindow::createCategoryPage(Category* category)
 
 		QLabel* kanjiList = new QLabel();
 		QString kanjiListText;
-		std::vector<Kanji*> lessonKanji = lesson->getKanji();
+		std::vector<Hieroglyph*> lessonKanji = lesson->getKanji();
 		for (unsigned int j = 0; j < lessonKanji.size(); ++j) {
 			kanjiListText += lessonKanji[j]->getSymbol();
 		}
@@ -142,7 +142,7 @@ void MainWindow::createCategoryPage(Category* category)
         button->setFixedHeight(30);
         connect(button, &QPushButton::pressed, this, [lesson, this]() {
             createLessonPage(lesson);
-            ui->stackedWidget->setCurrentIndex(LessonPage);
+			ui->pageSelector->setCurrentIndex(LessonPage);
         });
 
         gridLayout->addWidget(button, 0, 5, 2, 2);
@@ -152,8 +152,8 @@ void MainWindow::createCategoryPage(Category* category)
 		QListWidgetItem* item = new QListWidgetItem();
         item->setSizeHint(QSize(0,50));
         item->setFlags(Qt::NoItemFlags);
-		ui->lessonsList->addItem(item);
-		ui->lessonsList->setItemWidget(item, widget);
+		ui->categoryPageLessonsList->addItem(item);
+		ui->categoryPageLessonsList->setItemWidget(item, widget);
 
         QFrame* horizontalLine = new QFrame();
         horizontalLine->setFrameShape(QFrame::HLine);
@@ -161,24 +161,24 @@ void MainWindow::createCategoryPage(Category* category)
         QListWidgetItem* separator = new QListWidgetItem();
         separator->setSizeHint(QSize(50,1));
         separator->setFlags(Qt::NoItemFlags);
-        ui->lessonsList->addItem(separator);
-        ui->lessonsList->setItemWidget(separator, horizontalLine);
+		ui->categoryPageLessonsList->addItem(separator);
+		ui->categoryPageLessonsList->setItemWidget(separator, horizontalLine);
 	}
 }
 
 void MainWindow::createLessonPage(Lesson* lesson)
 {
-    ui->labelLessonName->setText(lesson->getName());
+	ui->lessonPageNameLabel->setText(lesson->getName());
 
-    connect(ui->buttonBackToCategory, &QPushButton::pressed, this, [this]() {
-        ui->stackedWidget->setCurrentIndex(CategoryPage);
+	connect(ui->lessonPageBackButton, &QPushButton::pressed, this, [this]() {
+		ui->pageSelector->setCurrentIndex(CategoryPage);
     });
 
-    ui->kanjiList->clear();
+	ui->lessonPageKanjiList->clear();
 
-    std::vector<Kanji*> hieroglyphs = lesson->getKanji();
+	std::vector<Hieroglyph*> hieroglyphs = lesson->getKanji();
     for (unsigned int i = 0; i < hieroglyphs.size(); ++i) {
-        Kanji* kanji = hieroglyphs[i];
+		Hieroglyph* kanji = hieroglyphs[i];
 
         QWidget* widget = new QWidget();
         QGridLayout* gridLayout = new QGridLayout();
@@ -203,8 +203,8 @@ void MainWindow::createLessonPage(Lesson* lesson)
         QListWidgetItem* item = new QListWidgetItem();
         item->setSizeHint(QSize(0,80));
         item->setFlags(Qt::NoItemFlags);
-        ui->kanjiList->addItem(item);
-        ui->kanjiList->setItemWidget(item, widget);
+		ui->lessonPageKanjiList->addItem(item);
+		ui->lessonPageKanjiList->setItemWidget(item, widget);
 
         QFrame* horizontalLine = new QFrame();
         horizontalLine->setFrameShape(QFrame::HLine);
@@ -212,7 +212,7 @@ void MainWindow::createLessonPage(Lesson* lesson)
         QListWidgetItem* separator = new QListWidgetItem();
         separator->setSizeHint(QSize(50,1));
         separator->setFlags(Qt::NoItemFlags);
-        ui->kanjiList->addItem(separator);
-        ui->kanjiList->setItemWidget(separator, horizontalLine);
+		ui->lessonPageKanjiList->addItem(separator);
+		ui->lessonPageKanjiList->setItemWidget(separator, horizontalLine);
     }
 }

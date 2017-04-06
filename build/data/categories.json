@@ -1,0 +1,26 @@
+{
+	"groups": [
+		{
+			"name": "Кёику",
+			"title": "Начальная школа",
+			"categories": [
+				"category_1/category.json",
+				"category_2/category.json",
+				"category_3/category.json",
+				"category_4/category.json",
+				"category_5/category.json",
+				"category_6/category.json"
+			]
+		},
+		{
+			"name": "Дзёё",
+			"title": "Средняя школа",
+			"categories": [
+				"category_7/category.json",
+				"category_8/category.json",
+				"category_9/category.json",
+				"category_10/category.json"
+			]
+		}
+	]
+}

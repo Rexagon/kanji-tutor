@@ -8,23 +8,23 @@ CONFIG	+= c++14
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-DESTDIR	= ../../bin
+DESTDIR	= ../../build
 OBJECTS_DIR = obj
 MOC_DIR = obj
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
-    kanji.cpp \
-    category.cpp \
-    lesson.cpp \
-    group.cpp
+    window/mainwindow.cpp \
+    models/category.cpp \
+    models/lesson.cpp \
+    models/group.cpp \
+    models/hieroglyph.cpp
 
 HEADERS	+= \
-    mainwindow.h \
-    kanji.h \
-    category.h \
-    lesson.h \
-    group.h
+    window/mainwindow.h \
+    models/category.h \
+    models/lesson.h \
+    models/group.h \
+    models/hieroglyph.h
 
-FORMS	+= mainwindow.ui
+FORMS	+= window/mainwindow.ui

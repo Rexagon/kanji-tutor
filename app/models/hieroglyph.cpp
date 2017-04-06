@@ -1,8 +1,8 @@
-#include "kanji.h"
+#include "hieroglyph.h"
 
 #include <QJsonArray>
 
-Kanji::Kanji(const QJsonObject &json)
+Hieroglyph::Hieroglyph(const QJsonObject &json)
 {
     m_symbol = json["s"].toString();
 
@@ -22,24 +22,24 @@ Kanji::Kanji(const QJsonObject &json)
     }
 }
 
-Kanji::Kanji(const QString &symbol) :
+Hieroglyph::Hieroglyph(const QString &symbol) :
     m_symbol(symbol)
 {
 }
 
 
-QString Kanji::getSymbol() const
+QString Hieroglyph::getSymbol() const
 {
     return m_symbol;
 }
 
 
-void Kanji::addOnyomi(const QString &onyomi)
+void Hieroglyph::addOnyomi(const QString &onyomi)
 {
     m_onyomi.push_back(onyomi);
 }
 
-bool Kanji::hasOnyomi(const QString &onyomi) const
+bool Hieroglyph::hasOnyomi(const QString &onyomi) const
 {
     for (unsigned int i = 0; i < m_onyomi.size(); ++i) {
         if (m_onyomi[i] == onyomi) return true;
@@ -47,18 +47,18 @@ bool Kanji::hasOnyomi(const QString &onyomi) const
     return false;
 }
 
-std::vector<QString> Kanji::getOnyomi() const
+std::vector<QString> Hieroglyph::getOnyomi() const
 {
     return m_onyomi;
 }
 
 
-void Kanji::addKunyomi(const QString &kunyomi)
+void Hieroglyph::addKunyomi(const QString &kunyomi)
 {
     m_kunyomi.push_back(kunyomi);
 }
 
-bool Kanji::hasKunyomi(const QString &kunyomi) const
+bool Hieroglyph::hasKunyomi(const QString &kunyomi) const
 {
     for (unsigned int i = 0; i < m_kunyomi.size(); ++i) {
         if (m_kunyomi[i] == kunyomi) return true;
@@ -66,18 +66,18 @@ bool Kanji::hasKunyomi(const QString &kunyomi) const
     return false;
 }
 
-std::vector<QString> Kanji::getKunyomi() const
+std::vector<QString> Hieroglyph::getKunyomi() const
 {
     return m_kunyomi;
 }
 
 
-void Kanji::addTranslation(const QString &translation)
+void Hieroglyph::addTranslation(const QString &translation)
 {
     m_translations.push_back(translation);
 }
 
-bool Kanji::hasTranslation(const QString& translation) const
+bool Hieroglyph::hasTranslation(const QString& translation) const
 {
     for (unsigned int i = 0; i < m_translations.size(); ++i) {
         if (m_translations[i] == translation) return true;
@@ -85,7 +85,7 @@ bool Kanji::hasTranslation(const QString& translation) const
     return false;
 }
 
-std::vector<QString> Kanji::getTranslations()
+std::vector<QString> Hieroglyph::getTranslations()
 {
     return m_translations;
 }
