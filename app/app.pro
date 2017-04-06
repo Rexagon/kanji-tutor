@@ -18,15 +18,13 @@ SOURCES += \
     kanji.cpp \
     category.cpp \
     lesson.cpp \
-    group.cpp \
-    lessonslistitem.cpp
+    group.cpp
 
 HEADERS	+= \
     mainwindow.h \
     kanji.h \
     category.h \
     lesson.h \
-    group.h \
-    lessonslistitem.h
+    group.h
 
 FORMS	+= mainwindow.ui

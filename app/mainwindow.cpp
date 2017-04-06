@@ -79,7 +79,18 @@ void MainWindow::createStartPage()
 		gridLayout->setContentsMargins(0,0,16,20);
 
 		for (unsigned int j = 0; j < categories.size(); j++) {
-			gridLayout->addWidget(createCategoryButton(categories[j]), j / 3, j % 3, 1, 1);
+            Category* category = categories[j];
+            QPushButton* button = new QPushButton(category->getName());
+
+            connect(button, &QPushButton::pressed, this, [category, this]() {
+                createCategoryPage(category);
+                ui->stackedWidget->setCurrentIndex(CategoryPage);
+            });
+
+            button->setFont(QFont("Verdana", 10, 10));
+            button->setFixedSize(118, 80);
+
+            gridLayout->addWidget(button, j / 3, j % 3, 1, 1);
         }
 
 		QWidget* widget = new QWidget(this);
@@ -97,7 +108,9 @@ void MainWindow::createStartPage()
 
 void MainWindow::createCategoryPage(Category* category)
 {
-	connect(ui->buttonBack, &QPushButton::pressed, this, [this]() {
+    ui->labelCategoryName->setText(category->getName());
+
+    connect(ui->buttonBackToStart, &QPushButton::pressed, this, [this]() {
 		ui->stackedWidget->setCurrentIndex(StartPage);
 	});
 
@@ -124,48 +137,82 @@ void MainWindow::createCategoryPage(Category* category)
 		kanjiList->setText(kanjiListText);
 		gridLayout->addWidget(kanjiList, 1, 0, 1, 4);
 
+        QPushButton* button = new QPushButton();
+        button->setText("Начать");
+        button->setFixedHeight(30);
+        connect(button, &QPushButton::pressed, this, [lesson, this]() {
+            createLessonPage(lesson);
+            ui->stackedWidget->setCurrentIndex(LessonPage);
+        });
+
+        gridLayout->addWidget(button, 0, 5, 2, 2);
+
 		widget->setLayout(gridLayout);
 
 		QListWidgetItem* item = new QListWidgetItem();
-		item->setSizeHint(QSize(0,50));
-		item->setFlags(Qt::NoItemFlags);
+        item->setSizeHint(QSize(0,50));
+        item->setFlags(Qt::NoItemFlags);
 		ui->lessonsList->addItem(item);
 		ui->lessonsList->setItemWidget(item, widget);
 
-		connect(widget, &mousePressEvent, this, [this](QMouseEvent* event) {
-			QMessageBox::about(this, "asd", "qwe");
-		});
+        QFrame* horizontalLine = new QFrame();
+        horizontalLine->setFrameShape(QFrame::HLine);
 
-		if (i != lessons.size() - 1) {
-			QFrame* horizontalLine = new QFrame();
-			horizontalLine->setFrameShape(QFrame::HLine);
-
-			QListWidgetItem* separator = new QListWidgetItem();
-			separator->setSizeHint(QSize(50,1));
-			separator->setFlags(Qt::NoItemFlags);
-			ui->lessonsList->addItem(separator);
-			ui->lessonsList->setItemWidget(separator, horizontalLine);
-		}
+        QListWidgetItem* separator = new QListWidgetItem();
+        separator->setSizeHint(QSize(50,1));
+        separator->setFlags(Qt::NoItemFlags);
+        ui->lessonsList->addItem(separator);
+        ui->lessonsList->setItemWidget(separator, horizontalLine);
 	}
 }
 
 void MainWindow::createLessonPage(Lesson* lesson)
 {
+    ui->labelLessonName->setText(lesson->getName());
 
-}
-
-QPushButton *MainWindow::createCategoryButton(Category* category)
-{
-	QPushButton* button = new QPushButton(category->getName());
-
-	connect(button, &QPushButton::pressed, this, [category, this]() {
-		createCategoryPage(category);
+    connect(ui->buttonBackToCategory, &QPushButton::pressed, this, [this]() {
         ui->stackedWidget->setCurrentIndex(CategoryPage);
-		ui->labelCategoryName->setText(category->getName());
     });
 
-    button->setFont(QFont("Verdana", 10, 10));
-	button->setFixedSize(118, 80);
+    ui->kanjiList->clear();
 
-    return button;
+    std::vector<Kanji*> hieroglyphs = lesson->getKanji();
+    for (unsigned int i = 0; i < hieroglyphs.size(); ++i) {
+        Kanji* kanji = hieroglyphs[i];
+
+        QWidget* widget = new QWidget();
+        QGridLayout* gridLayout = new QGridLayout();
+
+
+        QLabel* symbol = new QLabel(kanji->getSymbol());
+        symbol->setFont(QFont("Tahoma", 30, 20));
+        gridLayout->addWidget(symbol, 0, 0, 3, 2);
+
+        QLabel* translation = new QLabel(kanji->getTranslations()[0]);
+        translation->setFont(QFont("Tahoma", 10, 10));
+        gridLayout->addWidget(translation, 4, 0, 1, 2);
+
+        QLabel* onyomi = new QLabel(kanji->getOnyomi()[0]);
+        gridLayout->addWidget(onyomi, 0, 3, 2, 3);
+
+        QLabel* kunyomi = new QLabel(kanji->getKunyomi()[0]);
+        gridLayout->addWidget(kunyomi, 3, 3, 2, 3);
+
+        widget->setLayout(gridLayout);
+
+        QListWidgetItem* item = new QListWidgetItem();
+        item->setSizeHint(QSize(0,80));
+        item->setFlags(Qt::NoItemFlags);
+        ui->kanjiList->addItem(item);
+        ui->kanjiList->setItemWidget(item, widget);
+
+        QFrame* horizontalLine = new QFrame();
+        horizontalLine->setFrameShape(QFrame::HLine);
+
+        QListWidgetItem* separator = new QListWidgetItem();
+        separator->setSizeHint(QSize(50,1));
+        separator->setFlags(Qt::NoItemFlags);
+        ui->kanjiList->addItem(separator);
+        ui->kanjiList->setItemWidget(separator, horizontalLine);
+    }
 }
