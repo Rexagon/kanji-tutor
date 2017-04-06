@@ -18,13 +18,17 @@ SOURCES += \
     models/category.cpp \
     models/lesson.cpp \
     models/group.cpp \
-    models/hieroglyph.cpp
+    models/hieroglyph.cpp \
+    widgets/lessonlistitem.cpp \
+    widgets/kanjilistitem.cpp
 
 HEADERS	+= \
     window/mainwindow.h \
     models/category.h \
     models/lesson.h \
     models/group.h \
-    models/hieroglyph.h
+    models/hieroglyph.h \
+    widgets/lessonlistitem.h \
+    widgets/kanjilistitem.h
 
 FORMS	+= window/mainwindow.ui

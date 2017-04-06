@@ -14,11 +14,11 @@ public:
 
     QString getName() const;
 
-    std::vector<Hieroglyph*> getKanji() const;
+	std::vector<Hieroglyph*> getHieroglyphs() const;
 private:
     QString m_name;
 
-    std::vector<std::unique_ptr<Hieroglyph>> m_kanji;
+	std::vector<std::unique_ptr<Hieroglyph>> m_hieroglyphs;
 };
 
 #endif // LESSON_H

@@ -5,10 +5,12 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QJsonArray>
-#include <QDebug>
 #include <QFile>
 
 #include <cmath>
+
+#include "widgets/lessonlistitem.h"
+#include "widgets/kanjilistitem.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -121,48 +123,18 @@ void MainWindow::createCategoryPage(Category* category)
 	for (unsigned int i = 0; i < lessons.size(); ++i) {
 		Lesson* lesson = lessons[i];
 
-		QWidget* widget = new QWidget();
-		QGridLayout* gridLayout = new QGridLayout();
+		LessonListItem* widget = new LessonListItem(lesson);
 
-		QLabel* name = new QLabel(lesson->getName());
-		name->setFont(QFont("Verdana", 10, 10));
-		gridLayout->addWidget(name, 0, 0, 1, 4);
-
-		QLabel* kanjiList = new QLabel();
-		QString kanjiListText;
-		std::vector<Hieroglyph*> lessonKanji = lesson->getKanji();
-		for (unsigned int j = 0; j < lessonKanji.size(); ++j) {
-			kanjiListText += lessonKanji[j]->getSymbol();
-		}
-		kanjiList->setText(kanjiListText);
-		gridLayout->addWidget(kanjiList, 1, 0, 1, 4);
-
-        QPushButton* button = new QPushButton();
-        button->setText("Начать");
-        button->setFixedHeight(30);
-        connect(button, &QPushButton::pressed, this, [lesson, this]() {
-            createLessonPage(lesson);
+		connect(widget, &LessonListItem::pressed, this, [lesson, this]() {
+			createLessonPage(lesson);
 			ui->pageSelector->setCurrentIndex(LessonPage);
-        });
-
-        gridLayout->addWidget(button, 0, 5, 2, 2);
-
-		widget->setLayout(gridLayout);
+		});
 
 		QListWidgetItem* item = new QListWidgetItem();
-        item->setSizeHint(QSize(0,50));
-        item->setFlags(Qt::NoItemFlags);
+		item->setSizeHint(QSize(0, widget->size().height()));
+		item->setFlags(Qt::NoItemFlags);
 		ui->categoryPageLessonsList->addItem(item);
 		ui->categoryPageLessonsList->setItemWidget(item, widget);
-
-        QFrame* horizontalLine = new QFrame();
-        horizontalLine->setFrameShape(QFrame::HLine);
-
-        QListWidgetItem* separator = new QListWidgetItem();
-        separator->setSizeHint(QSize(50,1));
-        separator->setFlags(Qt::NoItemFlags);
-		ui->categoryPageLessonsList->addItem(separator);
-		ui->categoryPageLessonsList->setItemWidget(separator, horizontalLine);
 	}
 }
 
@@ -176,43 +148,20 @@ void MainWindow::createLessonPage(Lesson* lesson)
 
 	ui->lessonPageKanjiList->clear();
 
-	std::vector<Hieroglyph*> hieroglyphs = lesson->getKanji();
+	std::vector<Hieroglyph*> hieroglyphs = lesson->getHieroglyphs();
     for (unsigned int i = 0; i < hieroglyphs.size(); ++i) {
-		Hieroglyph* kanji = hieroglyphs[i];
+		Hieroglyph* hieroglyph = hieroglyphs[i];
 
-        QWidget* widget = new QWidget();
-        QGridLayout* gridLayout = new QGridLayout();
+		KanjiListItem* widget = new KanjiListItem(hieroglyph);
 
+		connect(widget, &KanjiListItem::pressed, this, [this]() {
 
-        QLabel* symbol = new QLabel(kanji->getSymbol());
-        symbol->setFont(QFont("Tahoma", 30, 20));
-        gridLayout->addWidget(symbol, 0, 0, 3, 2);
-
-        QLabel* translation = new QLabel(kanji->getTranslations()[0]);
-        translation->setFont(QFont("Tahoma", 10, 10));
-        gridLayout->addWidget(translation, 4, 0, 1, 2);
-
-        QLabel* onyomi = new QLabel(kanji->getOnyomi()[0]);
-        gridLayout->addWidget(onyomi, 0, 3, 2, 3);
-
-        QLabel* kunyomi = new QLabel(kanji->getKunyomi()[0]);
-        gridLayout->addWidget(kunyomi, 3, 3, 2, 3);
-
-        widget->setLayout(gridLayout);
+		});
 
         QListWidgetItem* item = new QListWidgetItem();
-        item->setSizeHint(QSize(0,80));
+		item->setSizeHint(QSize(0, widget->size().height()));
         item->setFlags(Qt::NoItemFlags);
 		ui->lessonPageKanjiList->addItem(item);
 		ui->lessonPageKanjiList->setItemWidget(item, widget);
-
-        QFrame* horizontalLine = new QFrame();
-        horizontalLine->setFrameShape(QFrame::HLine);
-
-        QListWidgetItem* separator = new QListWidgetItem();
-        separator->setSizeHint(QSize(50,1));
-        separator->setFlags(Qt::NoItemFlags);
-		ui->lessonPageKanjiList->addItem(separator);
-		ui->lessonPageKanjiList->setItemWidget(separator, horizontalLine);
     }
 }
