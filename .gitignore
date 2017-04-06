@@ -38,7 +38,7 @@ CMakeLists.txt.user*
 
 # Build
 temp
-bin
+build
 
 # Windows
 Thumbs.db
