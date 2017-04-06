@@ -2,8 +2,6 @@
 
 #include <QJsonArray>
 
-#include <QDebug>
-
 Kanji::Kanji(const QJsonObject &json)
 {
     m_symbol = json["s"].toString();

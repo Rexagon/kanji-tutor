@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QListWidgetItem>
 #include <QMainWindow>
 #include <QPushButton>
 
@@ -22,17 +23,17 @@ private:
         StartPage,
         CategoryPage,
         LessonPage
-    };
+	};
 
-    void loadData();
+	void loadData();
 
-    void createMenu();
+	void createMenu();
 
     void createStartPage();
-    void createCategoryPage();
-    void createLessonPage();
+	void createCategoryPage(Category* category);
+	void createLessonPage(Lesson* lesson);
 
-    QPushButton* createCategoryButton(Category* category);
+	QPushButton* createCategoryButton(Category* category);
 
     Ui::MainWindow *ui;
 
