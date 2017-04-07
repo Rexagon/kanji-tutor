@@ -28,16 +28,35 @@ KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushBut
 	}
 	QLabel* labelTranslations = new QLabel(translations);
 	labelTranslations->setFont(QFont("Tahoma", 10, 10));
-	gridLayout->addWidget(labelTranslations, 4, 0, 1, 5);
+	gridLayout->addWidget(labelTranslations, 4, 0, 1, 6);
 
 
+	// Readings font
 	QFont font("Tahoma", 12, 50);
+
 	// Onyuomi
-	QLabel* labelOnyomi = new QLabel("Он: " + hieroglyph->getOnyomi()[0]);
+	QString onyomi = "Он: ";
+	std::vector<QString> hieroglyphOnyomi = hieroglyph->getOnyomi();
+	for (unsigned int i = 0; i < hieroglyphOnyomi.size(); ++i) {
+		onyomi += hieroglyphOnyomi[i];
+		if (i != hieroglyphOnyomi.size() - 1) {
+			onyomi.push_back(", ");
+		}
+	}
+	QLabel* labelOnyomi = new QLabel(onyomi);
 	labelOnyomi->setFont(font);
 	gridLayout->addWidget(labelOnyomi, 0, 3, 2, 4);
 
-	QLabel* labelKunyomi = new QLabel("Кун: " + hieroglyph->getKunyomi()[0]);
+	// Kunyomi
+	QString kunyomi = "Кун: ";
+	std::vector<QString> hieroglyphKunyomi = hieroglyph->getKunyomi();
+	for (unsigned int i = 0; i < hieroglyphKunyomi.size(); ++i) {
+		kunyomi += hieroglyphKunyomi[i];
+		if (i != hieroglyphKunyomi.size() - 1) {
+			kunyomi.push_back(", ");
+		}
+	}
+	QLabel* labelKunyomi = new QLabel(kunyomi);
 	labelKunyomi->setFont(font);
 	gridLayout->addWidget(labelKunyomi, 2, 3, 2, 4);
 }

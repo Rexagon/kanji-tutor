@@ -1,5 +1,25 @@
 {
 	"name": "Кёику 3",
 	"lessons": [
+		"lesson_1.json",
+		"lesson_2.json",
+		"lesson_3.json",
+		"lesson_4.json",
+		"lesson_5.json",
+		"lesson_6.json",
+		"lesson_7.json",
+		"lesson_8.json",
+		"lesson_9.json",
+		"lesson_10.json",
+		"lesson_11.json",
+		"lesson_12.json",
+		"lesson_13.json",
+		"lesson_14.json",
+		"lesson_15.json",
+		"lesson_16.json",
+		"lesson_17.json",
+		"lesson_18.json",
+		"lesson_19.json",
+		"lesson_20.json"
 	]
 }
