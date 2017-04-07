@@ -6,26 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>401</width>
     <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>401</width>
     <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
+    <width>401</width>
     <height>500</height>
-   </size>
-  </property>
-  <property name="baseSize">
-   <size>
-    <width>400</width>
-    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -121,7 +115,7 @@
       </property>
       <layout class="QGridLayout" name="categoryPageGridLayout">
        <item row="0" column="0">
-        <widget class="QPushButton" name="categoryPageAllKanjiButton">
+        <widget class="QPushButton" name="categoryPageKanjiButton">
          <property name="text">
           <string>Список всех иероглифов</string>
          </property>
@@ -192,52 +186,99 @@
        <string>Название категории</string>
       </property>
      </widget>
-     <widget class="Line" name="lessonPageLine">
+     <widget class="QTabWidget" name="lessonPageTabWidget">
+      <property name="geometry">
+       <rect>
+        <x>-4</x>
+        <y>40</y>
+        <width>411</width>
+        <height>441</height>
+       </rect>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::ElideLeft</enum>
+      </property>
+      <property name="documentMode">
+       <bool>false</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="lessonPageKanjiTab">
+       <attribute name="title">
+        <string>Список</string>
+       </attribute>
+       <widget class="QListWidget" name="lessonPageKanjiList">
+        <property name="geometry">
+         <rect>
+          <x>11</x>
+          <y>7</y>
+          <width>382</width>
+          <height>401</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="lessonPageTestsTab">
+       <attribute name="title">
+        <string>Упражнения</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="lessonPageRevisionTab">
+       <attribute name="title">
+        <string>Повторение</string>
+       </attribute>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="categoryKanjiPage">
+     <widget class="QPushButton" name="categoryKanjiPageBackButton">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>10</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Назад</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="categoryKanjiPageNameLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>291</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Название категории</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="categoryKanjiPageKanjiList">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>70</y>
-        <width>381</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QWidget" name="gridLayoutWidget_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>381</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="lessonPageGridLayout">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="lessonPageAllKanjiButton">
-         <property name="text">
-          <string>Список всех иероглифов</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="lessonPageTestsButton">
-         <property name="text">
-          <string>Тесты для проверки</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QListWidget" name="lessonPageKanjiList">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>381</width>
-        <height>381</height>
+        <width>382</width>
+        <height>401</height>
        </rect>
       </property>
      </widget>
@@ -249,7 +290,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>401</width>
      <height>21</height>
     </rect>
    </property>

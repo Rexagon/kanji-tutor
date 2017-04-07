@@ -5,7 +5,7 @@
 
 KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushButton(parent)
 {
-	this->setFixedHeight(100);
+	this->setFixedHeight(99);
 	this->setFlat(true);
 	this->setCursor(QCursor(Qt::PointingHandCursor));
 
@@ -15,10 +15,10 @@ KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushBut
 	// Hieroglyph symbol
 	QLabel* labelSymbol = new QLabel(hieroglyph->getSymbol());
 	labelSymbol->setFont(QFont("Tahoma", 30, 20));
-	gridLayout->addWidget(labelSymbol, 0, 0, 3, 2);
+	gridLayout->addWidget(labelSymbol, 0, 0, 3, 1);
 
 	// Translations
-	QString translations;
+	QString translations = "Перевод: ";
 	std::vector<QString> hieroglyphTranslations = hieroglyph->getTranslations();
 	for (unsigned int i = 0; i < hieroglyphTranslations.size(); ++i) {
 		translations += hieroglyphTranslations[i];
@@ -28,10 +28,10 @@ KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushBut
 	}
 	QLabel* labelTranslations = new QLabel(translations);
 	labelTranslations->setFont(QFont("Tahoma", 10, 10));
-	gridLayout->addWidget(labelTranslations, 4, 0, 1, 2);
+	gridLayout->addWidget(labelTranslations, 4, 0, 1, 5);
 
 
-	QFont font("Tahoma", 12, 20);
+	QFont font("Tahoma", 12, 50);
 	// Onyuomi
 	QLabel* labelOnyomi = new QLabel("Он: " + hieroglyph->getOnyomi()[0]);
 	labelOnyomi->setFont(font);
@@ -40,10 +40,4 @@ KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushBut
 	QLabel* labelKunyomi = new QLabel("Кун: " + hieroglyph->getKunyomi()[0]);
 	labelKunyomi->setFont(font);
 	gridLayout->addWidget(labelKunyomi, 2, 3, 2, 4);
-
-	QFrame* horizontalLineWidget = new QFrame();
-	horizontalLineWidget->setFrameShape(QFrame::HLine);
-	horizontalLineWidget->setFixedHeight(1);
-	horizontalLineWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	gridLayout->addWidget(horizontalLineWidget, 5, 0, 1, 8, Qt::AlignBottom);
 }

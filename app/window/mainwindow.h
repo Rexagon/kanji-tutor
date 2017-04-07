@@ -22,7 +22,8 @@ private:
     enum Pages {
         StartPage,
         CategoryPage,
-        LessonPage
+		LessonPage,
+		CategoryKanjiPage
 	};
 
 	void loadData();
@@ -32,6 +33,7 @@ private:
     void createStartPage();
 	void createCategoryPage(Category* category);
 	void createLessonPage(Lesson* lesson);
+	void createCategoryKanjiPage(Category* category);
 
 	QPushButton* createCategoryButton(Category* category);
 

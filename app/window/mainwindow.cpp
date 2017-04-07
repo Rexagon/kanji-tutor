@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QJsonArray>
+#include <QPixmap>
 #include <QFile>
 
 #include <cmath>
@@ -56,9 +57,15 @@ void MainWindow::createMenu()
     connect(ui->menuItemAbout, &QAction::triggered, this, [this]() {
 		QMessageBox messageBox;
 		messageBox.setWindowTitle("О программе");
-		messageBox.setText("Kanji tutor");
-		messageBox.setInformativeText("Нечто неопределённое, созданные чтобы помочь изучить иероглифы методом простой зубрёжки и тестов.");
-		messageBox.setIcon(QMessageBox::Information);
+		messageBox.setText("<h3><b>Kanji tutor</b> <small>v1.01</small></h3>");
+		messageBox.setInformativeText("<p>Небольшой помощник в непростом деле изучения японских иероглифов. С помощью тестов и карточек выучить их будет немного проще.</p>"\
+									  "<p>Все уроки и категории данной программы хранятся как отдельные ресурсы, поэтому при обнаружении каких-то ошибок или неточностей "\
+									  "всё можно исправить самому. Также можно писать и свои уроки. Не стесняйтесь добавлять их в репозиторий.<p><hr>"\
+									  "Создатель:<br>"\
+									  "&nbsp;&nbsp;&nbsp;<i>Ivan Kalinin</i><br>"\
+									  "Репозиторий:<br>"\
+									  "&nbsp;&nbsp;&nbsp;github.com/Rexagon/kanji-tutor");
+		messageBox.setIconPixmap(QPixmap("icon.png"));
 		messageBox.setStandardButtons(QMessageBox::Ok);
 		messageBox.setDefaultButton(QMessageBox::Ok);
 		messageBox.exec();
@@ -84,7 +91,7 @@ void MainWindow::createStartPage()
             Category* category = categories[j];
             QPushButton* button = new QPushButton(category->getName());
 
-            connect(button, &QPushButton::pressed, this, [category, this]() {
+			connect(button, &QPushButton::pressed, this, [this, category]() {
                 createCategoryPage(category);
 				ui->pageSelector->setCurrentIndex(CategoryPage);
             });
@@ -116,7 +123,14 @@ void MainWindow::createCategoryPage(Category* category)
 		ui->pageSelector->setCurrentIndex(StartPage);
 	});
 
+	connect(ui->categoryPageKanjiButton, &QPushButton::pressed, this, [this, category]() {
+		createCategoryKanjiPage(category);
+		ui->pageSelector->setCurrentIndex(CategoryKanjiPage);
+	});
+
 	ui->categoryPageLessonsList->clear();
+	ui->categoryPageLessonsList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
+											   "QListWidget::item:hover { background-color: #fff4ef; }");
 
 	std::vector<Lesson*> lessons = category->getLessons();
 
@@ -125,16 +139,15 @@ void MainWindow::createCategoryPage(Category* category)
 
 		LessonListItem* widget = new LessonListItem(lesson);
 
-		connect(widget, &LessonListItem::pressed, this, [lesson, this]() {
+		connect(widget, &LessonListItem::pressed, this, [this, lesson]() {
 			createLessonPage(lesson);
 			ui->pageSelector->setCurrentIndex(LessonPage);
 		});
 
-		QListWidgetItem* item = new QListWidgetItem();
-		item->setSizeHint(QSize(0, widget->size().height()));
-		item->setFlags(Qt::NoItemFlags);
-		ui->categoryPageLessonsList->addItem(item);
-		ui->categoryPageLessonsList->setItemWidget(item, widget);
+		QListWidgetItem* itemWidget = new QListWidgetItem();
+		itemWidget->setSizeHint(QSize(0, widget->size().height()));
+		ui->categoryPageLessonsList->addItem(itemWidget);
+		ui->categoryPageLessonsList->setItemWidget(itemWidget, widget);
 	}
 }
 
@@ -147,6 +160,9 @@ void MainWindow::createLessonPage(Lesson* lesson)
     });
 
 	ui->lessonPageKanjiList->clear();
+	ui->lessonPageKanjiList->scrollToTop();
+	ui->lessonPageKanjiList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
+										   "QListWidget::item:hover { background-color: #fff4ef; }");
 
 	std::vector<Hieroglyph*> hieroglyphs = lesson->getHieroglyphs();
     for (unsigned int i = 0; i < hieroglyphs.size(); ++i) {
@@ -160,8 +176,42 @@ void MainWindow::createLessonPage(Lesson* lesson)
 
         QListWidgetItem* item = new QListWidgetItem();
 		item->setSizeHint(QSize(0, widget->size().height()));
-        item->setFlags(Qt::NoItemFlags);
 		ui->lessonPageKanjiList->addItem(item);
 		ui->lessonPageKanjiList->setItemWidget(item, widget);
-    }
+	}
+}
+
+void MainWindow::createCategoryKanjiPage(Category* category)
+{
+	ui->categoryKanjiPageNameLabel->setText(category->getName() + ". Иероглифы");
+
+	connect(ui->categoryKanjiPageBackButton, &QPushButton::pressed, this, [this]() {
+		ui->pageSelector->setCurrentIndex(CategoryPage);
+	});
+
+	ui->categoryKanjiPageKanjiList->clear();
+	ui->categoryKanjiPageKanjiList->scrollToTop();
+	ui->categoryKanjiPageKanjiList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
+										   "QListWidget::item:hover { background-color: #fff4ef; }");
+
+	std::vector<Lesson*> lessons = category->getLessons();
+	for (unsigned int i = 0; i < lessons.size(); ++i) {
+		Lesson* lesson = lessons[i];
+
+		std::vector<Hieroglyph*> hieroglyphs = lesson->getHieroglyphs();
+		for (unsigned int j = 0; j < hieroglyphs.size(); ++j) {
+			Hieroglyph* hieroglyph = hieroglyphs[j];
+
+			KanjiListItem* widget = new KanjiListItem(hieroglyph);
+
+			connect(widget, &KanjiListItem::pressed, this, [this]() {
+
+			});
+
+			QListWidgetItem* item = new QListWidgetItem();
+			item->setSizeHint(QSize(0, widget->size().height()));
+			ui->categoryKanjiPageKanjiList->addItem(item);
+			ui->categoryKanjiPageKanjiList->setItemWidget(item, widget);
+		}
+	}
 }
