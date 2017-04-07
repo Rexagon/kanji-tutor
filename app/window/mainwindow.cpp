@@ -192,7 +192,7 @@ void MainWindow::createCategoryKanjiPage(Category* category)
 	ui->categoryKanjiPageKanjiList->clear();
 	ui->categoryKanjiPageKanjiList->scrollToTop();
 	ui->categoryKanjiPageKanjiList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
-										   "QListWidget::item:hover { background-color: #fff4ef; }");
+												  "QListWidget::item:hover { background-color: #fff4ef; }");
 
 	std::vector<Lesson*> lessons = category->getLessons();
 	for (unsigned int i = 0; i < lessons.size(); ++i) {
