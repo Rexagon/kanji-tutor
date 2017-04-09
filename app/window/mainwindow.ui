@@ -110,7 +110,7 @@
         <x>10</x>
         <y>40</y>
         <width>381</width>
-        <height>31</height>
+        <height>25</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="categoryPageGridLayout">
@@ -134,7 +134,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>70</y>
+        <y>60</y>
         <width>381</width>
         <height>16</height>
        </rect>
@@ -147,9 +147,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>90</y>
+        <y>76</y>
         <width>381</width>
-        <height>381</height>
+        <height>395</height>
        </rect>
       </property>
      </widget>
@@ -199,7 +199,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -232,6 +232,21 @@
        <attribute name="title">
         <string>Упражнения</string>
        </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>9</y>
+          <width>381</width>
+          <height>401</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="lessonPageExercisesList">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
+         </property>
+        </layout>
+       </widget>
       </widget>
       <widget class="QWidget" name="lessonPageRevisionTab">
        <attribute name="title">
@@ -239,6 +254,10 @@
        </attribute>
       </widget>
      </widget>
+     <zorder>lessonPageBackButton</zorder>
+     <zorder>lessonPageNameLabel</zorder>
+     <zorder>lessonPageTabWidget</zorder>
+     <zorder>gridLayoutWidget_2</zorder>
     </widget>
     <widget class="QWidget" name="categoryKanjiPage">
      <widget class="QPushButton" name="categoryKanjiPageBackButton">
@@ -280,6 +299,50 @@
         <width>382</width>
         <height>401</height>
        </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page">
+     <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>381</width>
+        <height>411</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="categoryTestsPageExercisesList"/>
+     </widget>
+     <widget class="QLabel" name="categoryTestsPageNameLabel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>291</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Название категории</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="categoryTestsPageBackButton">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>10</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Назад</string>
       </property>
      </widget>
     </widget>

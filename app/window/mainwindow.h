@@ -23,7 +23,8 @@ private:
         StartPage,
         CategoryPage,
 		LessonPage,
-		CategoryKanjiPage
+		CategoryKanjiPage,
+		CategoryTestsPage
 	};
 
 	void loadData();

@@ -1,9 +1,7 @@
-QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = app
 TEMPLATE = app
 
+TARGET	= kanji-tutor
+QT      += core gui widgets texttospeech
 CONFIG	+= c++14
 
 DEFINES += QT_DEPRECATED_WARNINGS
@@ -20,7 +18,8 @@ SOURCES += \
     models/group.cpp \
     models/hieroglyph.cpp \
     widgets/lessonlistitem.cpp \
-    widgets/kanjilistitem.cpp
+    widgets/kanjilistitem.cpp \
+    widgets/exerciselistitem.cpp
 
 HEADERS	+= \
     window/mainwindow.h \
@@ -29,6 +28,7 @@ HEADERS	+= \
     models/group.h \
     models/hieroglyph.h \
     widgets/lessonlistitem.h \
-    widgets/kanjilistitem.h
+    widgets/kanjilistitem.h \
+    widgets/exerciselistitem.h
 
 FORMS	+= window/mainwindow.ui

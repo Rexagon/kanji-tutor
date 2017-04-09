@@ -5,10 +5,17 @@
 LessonListItem::LessonListItem(Lesson* lesson, QWidget *parent) : QPushButton(parent)
 {
 	this->setFixedHeight(65);
-	this->setFlat(true);
 	this->setCursor(QCursor(Qt::PointingHandCursor));
-
-	this->setStyleSheet("QPushButton:hover { color: red; }");
+	this->setStyleSheet("\
+	QPushButton {\
+		border: none;\
+		border-bottom: 1px solid gray;\
+		background: white;\
+	}\
+	QPushButton:hover {\
+		background: #c7ffad;\
+		border-bottom: 2px solid gray;\
+	}");
 
 	QGridLayout* gridLayout = new QGridLayout();
 	this->setLayout(gridLayout);

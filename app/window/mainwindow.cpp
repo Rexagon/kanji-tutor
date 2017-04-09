@@ -6,10 +6,12 @@
 #include <QMessageBox>
 #include <QJsonArray>
 #include <QPixmap>
+#include <QDebug>
 #include <QFile>
 
 #include <cmath>
 
+#include "widgets/exerciselistitem.h"
 #include "widgets/lessonlistitem.h"
 #include "widgets/kanjilistitem.h"
 
@@ -35,7 +37,7 @@ void MainWindow::loadData()
 {
     QFile file("data/categories.json");
     if (!file.open(QIODevice::ReadOnly)) {
-        throw std::runtime_error("Невозможно открыть файл с категориями");
+		throw QString("Невозможно открыть файл с категориями");
     }
 
     QJsonObject json = QJsonDocument::fromJson(file.readAll()).object();
@@ -128,9 +130,33 @@ void MainWindow::createCategoryPage(Category* category)
 		ui->pageSelector->setCurrentIndex(CategoryKanjiPage);
 	});
 
+	connect(ui->categoryPageTestsButton, &QPushButton::pressed, this, [this, category]() {
+		connect(ui->categoryTestsPageBackButton, &QPushButton::pressed, this, [this]() {
+			ui->pageSelector->setCurrentIndex(CategoryPage);
+		});
+
+		//TODO: REWRITE IT!!!
+		QLayoutItem* item;
+		while ((item = ui->categoryTestsPageExercisesList->takeAt(0)) != NULL)
+		{
+			delete item->widget();
+			delete item;
+		}
+
+		ui->categoryTestsPageExercisesList->setAlignment(Qt::AlignTop);
+
+		ExerciseListItem* firstExercise = new ExerciseListItem("Упражнение 1", "Кандзи/русский перевод");
+		ui->categoryTestsPageExercisesList->addWidget(firstExercise);
+
+		ExerciseListItem* secondExercise = new ExerciseListItem("Упражнение 2", "Русский перевод/кандзи");
+		ui->categoryTestsPageExercisesList->addWidget(secondExercise);
+
+		ExerciseListItem* thirdExercise = new ExerciseListItem("Упражнение 3", "Кандзи/чтение");
+		ui->categoryTestsPageExercisesList->addWidget(thirdExercise);
+		ui->pageSelector->setCurrentIndex(CategoryTestsPage);
+	});
+
 	ui->categoryPageLessonsList->clear();
-	ui->categoryPageLessonsList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
-											   "QListWidget::item:hover { background-color: #fff4ef; }");
 
 	std::vector<Lesson*> lessons = category->getLessons();
 
@@ -159,10 +185,11 @@ void MainWindow::createLessonPage(Lesson* lesson)
 		ui->pageSelector->setCurrentIndex(CategoryPage);
     });
 
+	ui->lessonPageTabWidget->setCurrentIndex(0);
+
+	// First tab
 	ui->lessonPageKanjiList->clear();
 	ui->lessonPageKanjiList->scrollToTop();
-	ui->lessonPageKanjiList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
-										   "QListWidget::item:hover { background-color: #fff4ef; }");
 
 	std::vector<Hieroglyph*> hieroglyphs = lesson->getHieroglyphs();
     for (unsigned int i = 0; i < hieroglyphs.size(); ++i) {
@@ -179,6 +206,26 @@ void MainWindow::createLessonPage(Lesson* lesson)
 		ui->lessonPageKanjiList->addItem(item);
 		ui->lessonPageKanjiList->setItemWidget(item, widget);
 	}
+
+	// Second tab
+	//TODO: rewrite it
+	QLayoutItem* item;
+	while ((item = ui->lessonPageExercisesList->takeAt(0)) != NULL)
+	{
+		delete item->widget();
+		delete item;
+	}
+
+	ui->lessonPageExercisesList->setAlignment(Qt::AlignTop);
+
+	ExerciseListItem* firstExercise = new ExerciseListItem("Упражнение 1", "Кандзи/русский перевод");
+	ui->lessonPageExercisesList->addWidget(firstExercise);
+
+	ExerciseListItem* secondExercise = new ExerciseListItem("Упражнение 2", "Русский перевод/кандзи");
+	ui->lessonPageExercisesList->addWidget(secondExercise);
+
+	ExerciseListItem* thirdExercise = new ExerciseListItem("Упражнение 3", "Кандзи/чтение");
+	ui->lessonPageExercisesList->addWidget(thirdExercise);
 }
 
 void MainWindow::createCategoryKanjiPage(Category* category)
@@ -191,8 +238,6 @@ void MainWindow::createCategoryKanjiPage(Category* category)
 
 	ui->categoryKanjiPageKanjiList->clear();
 	ui->categoryKanjiPageKanjiList->scrollToTop();
-	ui->categoryKanjiPageKanjiList->setStyleSheet("QListWidget::item { border-bottom: 1px solid gray; } "\
-												  "QListWidget::item:hover { background-color: #fff4ef; }");
 
 	std::vector<Lesson*> lessons = category->getLessons();
 	for (unsigned int i = 0; i < lessons.size(); ++i) {

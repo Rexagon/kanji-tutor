@@ -6,8 +6,17 @@
 KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushButton(parent)
 {
 	this->setFixedHeight(99);
-	this->setFlat(true);
 	this->setCursor(QCursor(Qt::PointingHandCursor));
+	this->setStyleSheet("\
+	QPushButton {\
+		border: none;\
+		border-bottom: 1px solid gray;\
+		background: white;\
+	}\
+	QPushButton:hover {\
+		background: #c7ffad;\
+		border-bottom: 2px solid gray;\
+	}");
 
 	QGridLayout* gridLayout = new QGridLayout();
 	this->setLayout(gridLayout);
@@ -28,7 +37,7 @@ KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushBut
 	}
 	QLabel* labelTranslations = new QLabel(translations);
 	labelTranslations->setFont(QFont("Tahoma", 10, 10));
-	gridLayout->addWidget(labelTranslations, 4, 0, 1, 6);
+	gridLayout->addWidget(labelTranslations, 4, 0, 1, 7);
 
 
 	// Readings font

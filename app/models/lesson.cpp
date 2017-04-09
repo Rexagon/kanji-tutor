@@ -7,9 +7,8 @@
 Lesson::Lesson(const QString &path)
 {
     QFile file(path);
-    if (!file.open(QIODevice::ReadOnly)) {
-        QString message = "Невозможно открыть урок \"" + path + "\"";
-        throw std::runtime_error(message.toStdString());
+	if (!file.open(QIODevice::ReadOnly)) {
+		throw QString("Невозможно открыть урок \"" + path + "\"");
     }
 
     QJsonObject json = QJsonDocument::fromJson(file.readAll()).object();
