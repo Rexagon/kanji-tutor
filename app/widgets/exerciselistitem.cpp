@@ -31,6 +31,10 @@ ExerciseListItem::ExerciseListItem(const QString& title, const QString& descript
 	QPushButton* buttonStart = new QPushButton("Начать");
 	gridLayout->addWidget(buttonStart, 2, 0, 1, 2);
 
+    connect(buttonStart, &QPushButton::pressed, this, [this] {
+        emit onStart();
+    });
+
 	// Devider
 	QFrame* horizontalLine = new QFrame();
 	horizontalLine->setFixedHeight(10);

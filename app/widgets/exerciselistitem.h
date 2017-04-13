@@ -8,6 +8,9 @@ class ExerciseListItem : public QWidget
 	Q_OBJECT
 public:
 	ExerciseListItem(const QString& title, const QString& description);
+
+signals:
+    void onStart();
 };
 
 #endif // EXERCISELISTITEM_H

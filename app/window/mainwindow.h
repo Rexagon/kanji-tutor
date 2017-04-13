@@ -5,19 +5,18 @@
 #include <QMainWindow>
 #include <QPushButton>
 
-#include "../models/group.h"
-
-namespace Ui {
-    class MainWindow;
-}
+#include "pagecategorytests.h"
+#include "pagecategorykanji.h"
+#include "pagecategory.h"
+#include "pagelesson.h"
+#include "pagestart.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
+	~MainWindow();
 private:
     enum Pages {
         StartPage,
@@ -27,20 +26,15 @@ private:
 		CategoryTestsPage
 	};
 
-	void loadData();
-
 	void createMenu();
-
-    void createStartPage();
-	void createCategoryPage(Category* category);
-	void createLessonPage(Lesson* lesson);
-	void createCategoryKanjiPage(Category* category);
-
-	QPushButton* createCategoryButton(Category* category);
 
 	Ui::MainWindow *ui;
 
-	std::vector<std::unique_ptr<Group>> m_groups;
+	std::unique_ptr<PageStart> m_pageStart;
+	std::unique_ptr<PageCategory> m_pageCategory;
+	std::unique_ptr<PageLesson> m_pageLesson;
+	std::unique_ptr<PageCategoryKanji> m_pageCategoryKanji;
+	std::unique_ptr<PageCategoryTests> m_pageCategoryTests;
 };
 
 #endif // MAINWINDOW_H

@@ -65,7 +65,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>374</width>
+         <width>377</width>
          <height>481</height>
         </rect>
        </property>
@@ -254,10 +254,6 @@
        </attribute>
       </widget>
      </widget>
-     <zorder>lessonPageBackButton</zorder>
-     <zorder>lessonPageNameLabel</zorder>
-     <zorder>lessonPageTabWidget</zorder>
-     <zorder>gridLayoutWidget_2</zorder>
     </widget>
     <widget class="QWidget" name="categoryKanjiPage">
      <widget class="QPushButton" name="categoryKanjiPageBackButton">
@@ -302,7 +298,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page">
+    <widget class="QWidget" name="categoryTestsPage">
      <widget class="QWidget" name="verticalLayoutWidget_2">
       <property name="geometry">
        <rect>
@@ -354,7 +350,7 @@
      <x>0</x>
      <y>0</y>
      <width>401</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
