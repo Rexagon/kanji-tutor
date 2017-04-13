@@ -66,4 +66,31 @@ void PageLesson::setLesson(Lesson* lesson)
 
 	});
 	m_ui->lessonPageExercisesList->addWidget(thirdExercise);
+
+	// Third tab
+	while ((item = m_ui->lessonPageExercisesList2->takeAt(0)) != NULL)
+	{
+		delete item->widget();
+		delete item;
+	}
+
+	m_ui->lessonPageExercisesList2->setAlignment(Qt::AlignTop);
+
+	ExerciseListItem* firstRevisionExercise = new ExerciseListItem("Упражнение 1", "Кандзи/русский перевод");
+	connect(firstRevisionExercise, &ExerciseListItem::onStart, this, [this]() {
+
+	});
+	m_ui->lessonPageExercisesList2->addWidget(firstRevisionExercise);
+
+	ExerciseListItem* secondRevisionExercise = new ExerciseListItem("Упражнение 2", "Русский перевод/кандзи");
+	connect(secondRevisionExercise, &ExerciseListItem::onStart, this, [this]() {
+
+	});
+	m_ui->lessonPageExercisesList2->addWidget(secondRevisionExercise);
+
+	ExerciseListItem* thirdRevisionExercise = new ExerciseListItem("Упражнение 3", "Кандзи/чтение");
+	connect(thirdRevisionExercise, &ExerciseListItem::onStart, this, [this]() {
+
+	});
+	m_ui->lessonPageExercisesList2->addWidget(thirdRevisionExercise);
 }
