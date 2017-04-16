@@ -1,4 +1,4 @@
-#include "lessonlistitem.h"
+#include "LessonListItem.h"
 
 #include <QGridLayout>
 
@@ -22,18 +22,23 @@ LessonListItem::LessonListItem(Lesson* lesson, QWidget *parent) : QPushButton(pa
 
 	// Lesson name
 	QLabel* labelName = new QLabel(lesson->getName());
-	labelName->setFont(QFont("Verdana", 12, 10));
-	gridLayout->addWidget(labelName, 0, 0, 1, 4);
+	labelName->setFont(QFont("Tahoma", 12, 10));
+	gridLayout->addWidget(labelName, 0, 0, 1, 5);
 
-	// Hieroglyphs row
-	QString hieroglyphsList = "Иероглифы: ";
+	// Hieroglyphs
+	QLabel* labelHieroglyphs = new QLabel("Иероглифы:");
+	labelHieroglyphs->setFont(QFont("Tahoma", 10, 10));
+	gridLayout->addWidget(labelHieroglyphs, 1, 0, 1, 1);
+
+	// Hieroglyphs list
+	QString hieroglyphsList;
 	std::vector<Hieroglyph*> lessonHieroglyphs = lesson->getHieroglyphs();
 	for (const auto& hieroglyph : lessonHieroglyphs) {
-		hieroglyphsList += hieroglyph->getSymbol();
+		hieroglyphsList += hieroglyph->getSymbol() + " ";
 	}
 	QLabel* labelHieroglyphsList = new QLabel(hieroglyphsList);
-	labelHieroglyphsList->setFont(QFont("Verdana", 10, 10));
-	gridLayout->addWidget(labelHieroglyphsList, 1, 0, 1, 4);
+	labelHieroglyphsList->setFont(QFont("Batang", 10, 10));
+	gridLayout->addWidget(labelHieroglyphsList, 1, 1, 1, 4);
 
 	// Lesson complete percent
 	//TODO: create lesson completion percentage

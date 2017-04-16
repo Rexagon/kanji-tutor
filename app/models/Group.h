@@ -1,7 +1,7 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include "category.h"
+#include "Category.h"
 
 class Group
 {

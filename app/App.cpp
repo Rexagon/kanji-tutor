@@ -1,5 +1,5 @@
-#include "app.h"
-#include "window/mainwindow.h"
+#include "App.h"
+#include "window/MainWindow.h"
 
 #include <QJsonDocument>
 #include <QMessageBox>
@@ -7,11 +7,15 @@
 #include <QJsonArray>
 #include <QFile>
 
+#include <ctime>
+
 std::unique_ptr<QApplication> App::m_qapp = nullptr;
 std::vector<std::unique_ptr<Group>> App::m_groups;
 
 bool App::init(int argc, char** argv)
 {
+	srand(time(nullptr));
+
 	static int m_argc = argc;
 	m_qapp = std::make_unique<QApplication>(m_argc, argv);
 
@@ -59,4 +63,19 @@ std::vector<Group*> App::getGroups()
 		groups[i] = m_groups[i].get();
 	}
 	return groups;
+}
+
+QString App::getDefaultFont()
+{
+	return "Tahoma";
+}
+
+QString App::getHieroglyphsFont()
+{
+	return "MS Mincho";
+}
+
+QString App::getKanaFont()
+{
+	return "MS Mincho";
 }

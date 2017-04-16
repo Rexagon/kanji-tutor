@@ -1,12 +1,12 @@
-#include "pagelesson.h"
+#include "PageLesson.h"
 
 #include <ui_mainwindow.h>
 
 #include "../widgets/exerciselistitem.h"
 #include "../widgets/kanjilistitem.h"
 
-PageLesson::PageLesson(Ui::MainWindow* ui) :
-	Page(ui, Id::LessonPage)
+PageLesson::PageLesson(Ui::MainWindow* ui, PageExercise* pageExercise) :
+    Page(ui, Id::LessonPage), m_pageExercise(pageExercise)
 {
 	connect(m_ui->lessonPageBackButton, &QPushButton::pressed, this, [this]() {
 		emit backButtonPressed();
@@ -41,7 +41,7 @@ void PageLesson::setLesson(Lesson* lesson)
 
 	// Second tab
 	QLayoutItem* item;
-	while ((item = m_ui->lessonPageExercisesList->takeAt(0)) != NULL)
+	while ((item = m_ui->lessonPageExercisesList->takeAt(0)) != nullptr)
 	{
 		delete item->widget();
 		delete item;
@@ -50,25 +50,25 @@ void PageLesson::setLesson(Lesson* lesson)
 	m_ui->lessonPageExercisesList->setAlignment(Qt::AlignTop);
 
 	ExerciseListItem* firstExercise = new ExerciseListItem("Упражнение 1", "Кандзи/русский перевод");
-	connect(firstExercise, &ExerciseListItem::onStart, this, [this]() {
-
-	});
+	connect(firstExercise, &ExerciseListItem::onStart, this,
+	        createStartEvent(lesson->getName() + ". Упражнение 1",
+	                         ExerciseType::KanjiTranslation, hieroglyphs));
 	m_ui->lessonPageExercisesList->addWidget(firstExercise);
 
 	ExerciseListItem* secondExercise = new ExerciseListItem("Упражнение 2", "Русский перевод/кандзи");
-	connect(secondExercise, &ExerciseListItem::onStart, this, [this]() {
-
-	});
+	connect(secondExercise, &ExerciseListItem::onStart, this,
+	        createStartEvent(lesson->getName() + ". Упражнение 2",
+	                         ExerciseType::TranslationKanji, hieroglyphs));
 	m_ui->lessonPageExercisesList->addWidget(secondExercise);
 
 	ExerciseListItem* thirdExercise = new ExerciseListItem("Упражнение 3", "Кандзи/чтение");
-	connect(thirdExercise, &ExerciseListItem::onStart, this, [this]() {
-
-	});
+	connect(thirdExercise, &ExerciseListItem::onStart, this,
+	        createStartEvent(lesson->getName() + ". Упражнение 3",
+	                         ExerciseType::KanjiReading, hieroglyphs));
 	m_ui->lessonPageExercisesList->addWidget(thirdExercise);
 
 	// Third tab
-	while ((item = m_ui->lessonPageExercisesList2->takeAt(0)) != NULL)
+	while ((item = m_ui->lessonPageExercisesList2->takeAt(0)) != nullptr)
 	{
 		delete item->widget();
 		delete item;
@@ -78,7 +78,7 @@ void PageLesson::setLesson(Lesson* lesson)
 
 	ExerciseListItem* firstRevisionExercise = new ExerciseListItem("Упражнение 1", "Кандзи/русский перевод");
 	connect(firstRevisionExercise, &ExerciseListItem::onStart, this, [this]() {
-
+		//m_pageExercise->setExercise(ExerciseType::KanjiTranslation, hieroglyphs);
 	});
 	m_ui->lessonPageExercisesList2->addWidget(firstRevisionExercise);
 
@@ -93,4 +93,15 @@ void PageLesson::setLesson(Lesson* lesson)
 
 	});
 	m_ui->lessonPageExercisesList2->addWidget(thirdRevisionExercise);
+}
+
+std::function<void ()> PageLesson::createStartEvent(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
+{
+	return [title, type, hieroglyphs, this]() {
+		connect(m_pageExercise, &PageExercise::backButtonPressed, this, [this]() {
+			this->setCurrent();
+		});
+		m_pageExercise->setExercise(title, type, hieroglyphs);
+		m_pageExercise->setCurrent();
+	};
 }

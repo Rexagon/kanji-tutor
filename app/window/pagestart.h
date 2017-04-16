@@ -3,7 +3,7 @@
 
 #include "page.h"
 
-#include "../models/category.h"
+#include "../models/Category.h"
 
 class PageStart : public Page
 {

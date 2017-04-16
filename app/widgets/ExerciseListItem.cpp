@@ -1,8 +1,10 @@
-#include "exerciselistitem.h"
+#include "ExerciseListItem.h"
 
 #include <QGridLayout>
 #include <QPushButton>
 #include <QLabel>
+
+#include "../App.h"
 
 ExerciseListItem::ExerciseListItem(const QString& title, const QString& description)
 {
@@ -13,7 +15,7 @@ ExerciseListItem::ExerciseListItem(const QString& title, const QString& descript
 
 	// Title
 	QLabel* labelTitle = new QLabel(title);
-	labelTitle->setFont(QFont("Tahoma", 11, 10));
+	labelTitle->setFont(QFont(App::getDefaultFont(), 11, 10));
 	gridLayout->addWidget(labelTitle, 0, 0, 1, 1);
 
 	// Description
@@ -24,7 +26,7 @@ ExerciseListItem::ExerciseListItem(const QString& title, const QString& descript
 	// TODO: get info from lesson or profile
 	QLabel* labelPercentage = new QLabel("0%");
 	labelPercentage->setAlignment(Qt::AlignRight);
-	labelPercentage->setFont(QFont("Tahoma", 16, 10));
+	labelPercentage->setFont(QFont(App::getDefaultFont(), 16, 10));
 	gridLayout->addWidget(labelPercentage, 0, 1, 2, 1);
 
 	// Start button

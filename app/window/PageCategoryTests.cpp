@@ -1,11 +1,11 @@
-#include "pagecategorytests.h"
+#include "PageCategoryTests.h"
 
 #include <ui_mainwindow.h>
 
 #include "../widgets/exerciselistitem.h"
 
-PageCategoryTests::PageCategoryTests(Ui::MainWindow* ui) :
-	Page(ui, Id::CategoryTestsPage)
+PageCategoryTests::PageCategoryTests(Ui::MainWindow* ui, PageExercise* pageExercise) :
+	Page(ui, Id::CategoryTestsPage), m_pageExercise(pageExercise)
 {
 	connect(ui->categoryTestsPageBackButton, &QPushButton::pressed, this, [this]() {
 		emit backButtonPressed();
@@ -17,7 +17,7 @@ void PageCategoryTests::setCategory(Category* category)
 	m_ui->categoryTestsPageNameLabel->setText(category->getName() + ". Тесты");
 
 	QLayoutItem* item;
-	while ((item = m_ui->categoryTestsPageExercisesList->takeAt(0)) != NULL)
+	while ((item = m_ui->categoryTestsPageExercisesList->takeAt(0)) != nullptr)
 	{
 		delete item->widget();
 		delete item;

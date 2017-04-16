@@ -3,7 +3,7 @@
 
 #include <QPushButton>
 
-#include "../models/hieroglyph.h"
+#include "../models/Hieroglyph.h"
 
 class KanjiListItem : public QPushButton
 {

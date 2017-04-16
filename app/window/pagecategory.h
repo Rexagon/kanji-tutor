@@ -3,8 +3,8 @@
 
 #include "page.h"
 
-#include "../models/category.h"
-#include "../models/lesson.h"
+#include "../models/Category.h"
+#include "../models/Lesson.h"
 
 class PageCategory : public Page
 {

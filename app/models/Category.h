@@ -1,20 +1,24 @@
 #ifndef CATEGORY_H
 #define CATEGORY_H
 
-#include "lesson.h"
+#include "Lesson.h"
+
+class Group;
 
 class Category
 {
 public:
-    Category(const QString& path);
+	Category(const QString& path, Group* group = nullptr);
     ~Category();
 
-    QString getName() const;
+	Group* getGroup() const;
 
+    QString getName() const;
     std::vector<Lesson*> getLessons();
 private:
-    QString m_name;
+	Group* m_group;
 
+    QString m_name;
     std::vector<std::unique_ptr<Lesson>> m_lessons;
 };
 

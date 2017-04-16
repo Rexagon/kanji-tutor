@@ -22,10 +22,20 @@
     <height>500</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>Liberation Sans</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Kanji tutor</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="font">
+    <font>
+     <family>Tahoma</family>
+    </font>
+   </property>
    <widget class="QStackedWidget" name="pageSelector">
     <property name="geometry">
      <rect>
@@ -65,7 +75,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>377</width>
+         <width>374</width>
          <height>481</height>
         </rect>
        </property>
@@ -183,7 +193,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Название категории</string>
+       <string>Название урока</string>
       </property>
      </widget>
      <widget class="QTabWidget" name="lessonPageTabWidget">
@@ -373,7 +383,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Название категории</string>
+       <string>Название упражнения</string>
       </property>
      </widget>
      <widget class="QPushButton" name="exercisePageBackButton">
@@ -399,36 +409,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="exercisePageGridLayout">
-       <item row="4" column="0">
-        <widget class="QPushButton" name="exercisePageCheckButton">
-         <property name="text">
-          <string>Проверить</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="exercisePageNextButton">
-         <property name="text">
-          <string>Дальше</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QLabel" name="exercisePageHieroglyphLabel">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>140</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0" colspan="2">
         <widget class="QLabel" name="exercisePageProgress">
          <property name="maximumSize">
@@ -453,7 +433,43 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
+        <widget class="Line" name="exercisePageHorizontalLine1">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QPushButton" name="exercisePageHintButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Подсказать</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QPushButton" name="exercisePageNextButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Дальше</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
         <layout class="QVBoxLayout" name="exercisePageOptionsList">
          <property name="sizeConstraint">
           <enum>QLayout::SetNoConstraint</enum>
@@ -464,43 +480,33 @@
          <property name="rightMargin">
           <number>40</number>
          </property>
-         <item>
-          <widget class="QCheckBox" name="checkBox">
-           <property name="text">
-            <string>CheckBox</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_2">
-           <property name="text">
-            <string>CheckBox</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_3">
-           <property name="text">
-            <string>CheckBox</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="checkBox_4">
-           <property name="text">
-            <string>CheckBox</string>
-           </property>
-          </widget>
-         </item>
         </layout>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="exercisePageTaskLabel">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>120</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="2">
+        <widget class="Line" name="exercisePageHorizontalLine2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
-     <zorder>exercisePageNameLabel</zorder>
-     <zorder>exercisePageBackButton</zorder>
-     <zorder>gridLayoutWidget_2</zorder>
-     <zorder>exercisePageProgress</zorder>
-     <zorder>exercisePageNextButton</zorder>
     </widget>
    </widget>
   </widget>
@@ -510,7 +516,7 @@
      <x>0</x>
      <y>0</y>
      <width>401</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

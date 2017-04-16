@@ -3,8 +3,8 @@
 
 #include "page.h"
 
-#include "../models/hieroglyph.h"
-#include "../models/category.h"
+#include "../models/Hieroglyph.h"
+#include "../models/Category.h"
 
 class PageCategoryKanji : public Page
 {

@@ -3,7 +3,7 @@
 
 #include <QApplication>
 
-#include "models/group.h"
+#include "models/Group.h"
 
 class App
 {
@@ -13,6 +13,10 @@ public:
 	static void close();
 
 	static std::vector<Group*> getGroups();
+
+	static QString getDefaultFont();
+	static QString getHieroglyphsFont();
+	static QString getKanaFont();
 private:
 	static std::unique_ptr<QApplication> m_qapp;
 

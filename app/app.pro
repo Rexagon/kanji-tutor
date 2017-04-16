@@ -12,37 +12,39 @@ MOC_DIR = obj
 
 SOURCES += \
     main.cpp \
-    window/mainwindow.cpp \
-    models/category.cpp \
-    models/lesson.cpp \
-    models/group.cpp \
-    models/hieroglyph.cpp \
-    widgets/lessonlistitem.cpp \
-    widgets/kanjilistitem.cpp \
-    widgets/exerciselistitem.cpp \
-    window/page.cpp \
-    window/pagestart.cpp \
-    app.cpp \
-    window/pagelesson.cpp \
-    window/pagecategory.cpp \
-    window/pagecategorykanji.cpp \
-    window/pagecategorytests.cpp
+    models/Category.cpp \
+    models/Group.cpp \
+    models/Hieroglyph.cpp \
+    models/Lesson.cpp \
+    widgets/ExerciseListItem.cpp \
+    widgets/KanjiListItem.cpp \
+    widgets/LessonListItem.cpp \
+    window/MainWindow.cpp \
+    window/Page.cpp \
+    window/PageCategory.cpp \
+    window/PageCategoryKanji.cpp \
+    window/PageCategoryTests.cpp \
+    window/PageExercise.cpp \
+    window/PageLesson.cpp \
+    window/PageStart.cpp \
+    App.cpp
 
 HEADERS	+= \
-    window/mainwindow.h \
-    models/category.h \
-    models/lesson.h \
-    models/group.h \
-    models/hieroglyph.h \
-    widgets/lessonlistitem.h \
-    widgets/kanjilistitem.h \
-    widgets/exerciselistitem.h \
-    window/page.h \
-    window/pagestart.h \
-    app.h \
-    window/pagelesson.h \
-    window/pagecategory.h \
-    window/pagecategorykanji.h \
-    window/pagecategorytests.h
+    window/MainWindow.h \
+    window/Page.h \
+    window/PageStart.h \
+    window/PageLesson.h \
+    window/PageCategory.h \
+    window/PageCategoryKanji.h \
+    window/PageCategoryTests.h \
+    window/PageExercise.h \
+    models/Category.h \
+    models/Group.h \
+    models/Hieroglyph.h \
+    models/Lesson.h \
+    widgets/ExerciseListItem.h \
+    widgets/KanjiListItem.h \
+    widgets/LessonListItem.h \
+    App.h
 
 FORMS	+= window/mainwindow.ui

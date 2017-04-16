@@ -1,4 +1,4 @@
-#include "group.h"
+#include "Group.h"
 
 #include <QJsonArray>
 
@@ -9,7 +9,7 @@ Group::Group(const QJsonObject &json)
 
     QJsonArray categories = json["categories"].toArray();
     for (int i = 0; i < categories.size(); ++i) {
-        m_categories.push_back(std::make_unique<Category>("data/" + categories[i].toString()));
+		m_categories.push_back(std::make_unique<Category>("data/" + categories[i].toString(), this));
     }
 }
 

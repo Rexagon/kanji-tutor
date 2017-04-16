@@ -1,8 +1,8 @@
-#include "pagecategory.h"
+#include "Pagecategory.h"
 
 #include <ui_mainwindow.h>
 
-#include "../widgets/lessonlistitem.h"
+#include "../widgets/LessonListItem.h"
 
 PageCategory::PageCategory(Ui::MainWindow* ui) :
 	Page(ui, Id::CategoryPage)

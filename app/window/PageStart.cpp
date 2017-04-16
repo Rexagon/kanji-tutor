@@ -1,10 +1,10 @@
-#include "pagestart.h"
+#include "PageStart.h"
 
 #include <cmath>
 
 #include <ui_mainwindow.h>
 
-#include "app.h"
+#include "App.h"
 
 PageStart::PageStart(Ui::MainWindow *ui) :
     Page(ui, Id::StartPage)
@@ -22,7 +22,7 @@ PageStart::PageStart(Ui::MainWindow *ui) :
 		// Title
 		QLabel* title = new QLabel(group->getTitle());
 		title->setMargin(0);
-		title->setFont(QFont("Verdana", 12, 10));
+		title->setFont(QFont(App::getDefaultFont(), 12, 10));
 		groupsList->addWidget(title);
 
 		// Buttons grid
@@ -42,7 +42,7 @@ PageStart::PageStart(Ui::MainWindow *ui) :
 				emit categorySelected(category);
 			});
 
-			button->setFont(QFont("Verdana", 10, 10));
+			button->setFont(QFont(App::getDefaultFont(), 10, 10));
 			button->setFixedSize(118, 80);
 
 			gridLayout->addWidget(button, j / 3, j % 3, 1, 1);

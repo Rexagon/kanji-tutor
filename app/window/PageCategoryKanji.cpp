@@ -1,8 +1,8 @@
-#include "pagecategorykanji.h"
+#include "PageCategoryKanji.h"
 
 #include <ui_mainwindow.h>
 
-#include "../widgets/kanjilistitem.h"
+#include "../widgets/KanjiListItem.h"
 
 PageCategoryKanji::PageCategoryKanji(Ui::MainWindow* ui) :
 	Page(ui, Id::CategoryKanjiPage)

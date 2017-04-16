@@ -1,5 +1,5 @@
-#include "app.h"
-#include <iostream>
+#include "App.h"
+
 int main(int argc, char** argv)
 {
 	if (App::init(argc, argv)) {

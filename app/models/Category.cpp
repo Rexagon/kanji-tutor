@@ -1,10 +1,13 @@
-#include "category.h"
+#include "Category.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QFile>
 
-Category::Category(const QString& path)
+#include "Group.h"
+
+Category::Category(const QString& path, Group* group) :
+	m_group(group)
 {
     QFile file(path);
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -19,13 +22,18 @@ Category::Category(const QString& path)
 
     QJsonArray lessons = json["lessons"].toArray();
     for (int i = 0; i < lessons.size(); ++i) {
-        m_lessons.push_back(std::make_unique<Lesson>(currentFolder + lessons[i].toString()));
+		m_lessons.push_back(std::make_unique<Lesson>(currentFolder + lessons[i].toString(), this, i));
     }
 }
 
 Category::~Category()
 {
-    m_lessons.clear();
+	m_lessons.clear();
+}
+
+Group*Category::getGroup() const
+{
+	return m_group;
 }
 
 QString Category::getName() const

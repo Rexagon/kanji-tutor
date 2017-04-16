@@ -1,21 +1,24 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include <ui_mainwindow.h>
 
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+	m_ui(new Ui::MainWindow)
 {
-	ui->setupUi(this);
+	m_ui->setupUi(this);
 
 	createMenu();
 
-	m_pageStart = std::make_unique<PageStart>(ui);
-	m_pageCategory = std::make_unique<PageCategory>(ui);
-	m_pageLesson = std::make_unique<PageLesson>(ui);
-	m_pageCategoryKanji = std::make_unique<PageCategoryKanji>(ui);
-	m_pageCategoryTests = std::make_unique<PageCategoryTests>(ui);
+	m_pageStart = std::make_unique<PageStart>(m_ui);
+	m_pageCategory = std::make_unique<PageCategory>(m_ui);
+	m_pageCategoryKanji = std::make_unique<PageCategoryKanji>(m_ui);
+
+	m_pageExercise = std::make_unique<PageExercise>(m_ui);
+
+	m_pageLesson = std::make_unique<PageLesson>(m_ui, m_pageExercise.get());
+	m_pageCategoryTests = std::make_unique<PageCategoryTests>(m_ui, m_pageExercise.get());
 
 	// Start page events
 	connect(m_pageStart.get(), &PageStart::categorySelected, this, [this](Category* category) {
@@ -61,18 +64,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-	delete ui;
+	delete m_ui;
 }
 
 void MainWindow::createMenu()
 {
     // File menu
-    connect(ui->menuItemExit, &QAction::triggered, this, [this]() {
+	connect(m_ui->menuItemExit, &QAction::triggered, this, [this]() {
         this->close();
     });
 
     // Help menu
-    connect(ui->menuItemAbout, &QAction::triggered, this, [this]() {
+	connect(m_ui->menuItemAbout, &QAction::triggered, this, [this]() {
 		QMessageBox messageBox;
 		messageBox.setWindowTitle("О программе");
 		messageBox.setText("<h3><b>Kanji tutor</b> <small>v1.2</small></h3>");
