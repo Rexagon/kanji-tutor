@@ -55,7 +55,7 @@ std::vector<QString> Hieroglyph::getOnyomi() const
 	return m_onyomi;
 }
 
-int Hieroglyph::getOnyomiSize() const
+unsigned int Hieroglyph::getOnyomiNum() const
 {
 	return m_onyomi.size();
 }
@@ -107,7 +107,7 @@ std::vector<QString> Hieroglyph::getRandomKunyomi(unsigned int size) const
 	}
 }
 
-int Hieroglyph::getKunyomiSize() const
+unsigned int Hieroglyph::getKunyomiNum() const
 {
 	return m_kunyomi.size();
 }
@@ -145,7 +145,7 @@ std::vector<QString> Hieroglyph::getRandomTranslations(unsigned int size) const
 	}
 }
 
-int Hieroglyph::getTranslationsSize() const
+unsigned int Hieroglyph::getTranslationsNum() const
 {
 	return m_translations.size();
 }

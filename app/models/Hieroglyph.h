@@ -22,19 +22,19 @@ public:
     bool hasOnyomi(const QString& onyomi) const;
 	std::vector<QString> getOnyomi() const;
 	std::vector<QString> getRandomOnyomi(unsigned int size) const;
-	int getOnyomiSize() const;
+	unsigned int getOnyomiNum() const;
 
     void addKunyomi(const QString& kunyomi);
     bool hasKunyomi(const QString& kunyomi) const;
 	std::vector<QString> getKunyomi() const;
 	std::vector<QString> getRandomKunyomi(unsigned int size) const;
-	int getKunyomiSize() const;
+	unsigned int getKunyomiNum() const;
 
     void addTranslation(const QString& translation);
     bool hasTranslation(const QString& translation) const;
 	std::vector<QString> getTranslations() const;
 	std::vector<QString> getRandomTranslations(unsigned int size) const;
-	int getTranslationsSize() const;
+	unsigned int getTranslationsNum() const;
 private:
 	Lesson* m_lesson;
 

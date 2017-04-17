@@ -39,11 +39,21 @@ Category*Lesson::getCategory() const
 	return m_category;
 }
 
+int Lesson::getId() const
+{
+	return m_id;
+}
+
 std::vector<Hieroglyph*> Lesson::getHieroglyphs() const
 {
     std::vector<Hieroglyph*> result(m_hieroglyphs.size());
     for (unsigned int i = 0; i < m_hieroglyphs.size(); ++i) {
         result[i] = m_hieroglyphs[i].get();
     }
-    return result;
+	return result;
+}
+
+unsigned int Lesson::getHieroglyphsNum() const
+{
+	return m_hieroglyphs.size();
 }

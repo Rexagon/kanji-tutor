@@ -15,6 +15,7 @@ public:
 
     QString getName() const;
     std::vector<Lesson*> getLessons();
+	unsigned int getLessonsNum() const;
 private:
 	Group* m_group;
 

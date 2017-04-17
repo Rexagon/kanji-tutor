@@ -18,7 +18,8 @@ public:
         LessonPage,
         CategoryKanjiPage,
 		CategoryTestsPage,
-		ExercisePage
+		ExercisePage,
+		ResultsPage
     };
 
     Page(Ui::MainWindow* ui, int pageId);

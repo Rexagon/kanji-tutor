@@ -19,6 +19,10 @@ signals:
 	void backButtonPressed();
 	void kanjiSelected(Hieroglyph* kanji);
 private:
+	void updateFirstTab(Lesson* lesson);
+	void updateSecondTab(Lesson* lesson);
+	void updateThirdTab(Lesson* lesson);
+
 	std::function<void ()> createStartEvent(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
 
 	PageExercise* m_pageExercise;

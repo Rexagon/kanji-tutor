@@ -17,6 +17,8 @@ public:
 signals:
 	void backButtonPressed();
 private:
+	std::function<void ()> createStartEvent(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
+
 	PageExercise* m_pageExercise;
 };
 

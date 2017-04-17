@@ -19,6 +19,7 @@ public:
 
 	QString getName() const;
 	std::vector<Hieroglyph*> getHieroglyphs() const;
+	unsigned int getHieroglyphsNum() const;
 private:
 	Category* m_category;
 	int m_id;

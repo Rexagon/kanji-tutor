@@ -47,5 +47,10 @@ std::vector<Lesson*> Category::getLessons()
     for (unsigned int i = 0; i < m_lessons.size(); ++i) {
         result[i] = m_lessons[i].get();
     }
-    return result;
+	return result;
+}
+
+unsigned int Category::getLessonsNum() const
+{
+	return m_lessons.size();
 }

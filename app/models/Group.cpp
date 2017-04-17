@@ -34,5 +34,10 @@ std::vector<Category*> Group::getCategories()
     for (unsigned int i = 0; i < m_categories.size(); ++i) {
         result[i] = m_categories[i].get();
     }
-    return result;
+	return result;
+}
+
+unsigned int Group::getCategoriesNum() const
+{
+	return m_categories.size();
 }

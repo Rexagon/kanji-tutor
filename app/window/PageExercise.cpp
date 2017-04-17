@@ -13,10 +13,25 @@ using namespace std::chrono_literals;
 PageExercise::PageExercise(Ui::MainWindow* ui) :
     Page(ui, Id::ExercisePage)
 {
+	m_pageResults = std::make_unique<PageResults>(m_ui);
+
 	m_ui->exercisePageOptionsList->setAlignment(Qt::AlignTop);
 
 	connect(m_ui->exercisePageBackButton, &QPushButton::pressed, this, [this]() {
 		emit backButtonPressed();
+	});
+
+	connect(m_ui->exercisePageHintButton, &QPushButton::pressed, this, [this]() {
+		if (m_currentAnswer.size() > 0) {
+			for (unsigned int i = 0; i < m_currentOptions.size(); ++i) {
+				if (m_currentOptions[i]->text() == m_currentAnswer[0]) {
+					m_currentOptions[i]->setChecked(true);
+					m_currentScore--;
+					break;
+				}
+			}
+			m_ui->exercisePageHintButton->setEnabled(false);
+		}
 	});
 
 	connect(m_ui->exercisePageNextButton, &QPushButton::pressed, this, [this]() {
@@ -24,6 +39,8 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 
 		for (unsigned int i = 0; i < m_currentOptions.size(); ++i) {
 			m_currentOptions[i]->setEnabled(false);
+
+			unsigned int taskScore = 0;
 
 			bool correct = false;
 			for (unsigned int j = 0; j < m_currentAnswer.size(); ++j) {
@@ -36,7 +53,7 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 			if (m_currentOptions[i]->isChecked()) {
 				if (correct) {
 					m_currentOptions[i]->setStyleSheet("color: green;");
-					m_currentScore++;
+					taskScore++;
 				}
 				else {
 					m_currentOptions[i]->setStyleSheet("color: red;");
@@ -45,6 +62,11 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 			else if (correct) {
 				m_currentOptions[i]->setStyleSheet("color: orange;");
 			}
+
+			m_currentScore += taskScore;
+			if (taskScore == m_currentAnswer.size()) {
+				m_numCorrectTasks++;
+			}
 		}
 
 		QTimer::singleShot(1000, this, [this]() {
@@ -52,7 +74,25 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 				updateTask();
 			}
 			else {
-				emit exerciseCompleted(m_currentScore);
+				m_pageResults->setResult(m_ui->exercisePageNameLabel->text(),
+				                         m_maximumScore, m_currentScore,
+				                         m_hieroglyphs.size(), m_numCorrectTasks);
+
+				connect(m_pageResults.get(), &PageResults::restartButtonPressed, this, [this]() {
+					std::random_shuffle(m_hieroglyphs.begin(), m_hieroglyphs.end());
+					m_currentHieroglyph = 0;
+					m_maximumScore = 0;
+					m_currentScore = 0;
+					m_numCorrectTasks = 0;
+					updateTask();
+					this->setCurrent();
+				});
+
+				connect(m_pageResults.get(), &PageResults::backButtonPressed, this, [this]() {
+					emit exerciseCompleted(m_maximumScore, m_currentScore);
+				});
+
+				m_pageResults->setCurrent();
 			}
 		});
 	});
@@ -69,6 +109,7 @@ void PageExercise::setExercise(const QString& title, int type, const std::vector
 	m_currentExerciseType = type;
 	m_maximumScore = 0;
 	m_currentScore = 0;
+	m_numCorrectTasks = 0;
 
 	switch (m_currentExerciseType) {
 	case ExerciseType::KanjiTranslation:
@@ -85,121 +126,128 @@ void PageExercise::setExercise(const QString& title, int type, const std::vector
 
 void PageExercise::updateTask()
 {
-	Hieroglyph*	hieroglyph = m_hieroglyphs[m_currentHieroglyph];
-
 	m_ui->exercisePageProgress->setText(QString::number(m_currentHieroglyph + 1) + "/" +
 	                                    QString::number(m_hieroglyphs.size()));
 
-	m_currentTask = "--";
-	m_currentAnswer.clear();
+	m_ui->exercisePageHintButton->setEnabled(true);
+
+	Hieroglyph*	hieroglyph = m_hieroglyphs[m_currentHieroglyph];
+	std::vector<Hieroglyph*> otherHieroglyphs = m_hieroglyphs;
+	otherHieroglyphs.erase(otherHieroglyphs.begin() + m_currentHieroglyph);
+	std::random_shuffle(otherHieroglyphs.begin(), otherHieroglyphs.end());
+
+	switch (m_currentExerciseType) {
+	case ExerciseType::KanjiTranslation:
+		makeKanjiTranslationTask(hieroglyph, otherHieroglyphs);
+		break;
+	case ExerciseType::TranslationKanji:
+		makeTranslationKanjiTask(hieroglyph, otherHieroglyphs);
+		break;
+	case ExerciseType::KanjiReading:
+		makeKanjiReadingTask(hieroglyph, otherHieroglyphs);
+		break;
+	}
+
+	m_maximumScore += m_currentAnswer.size();
+}
+
+void PageExercise::makeKanjiTranslationTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs)
+{
+	unsigned int maxAnswersSize = rand() % 2 + 1;
+	unsigned int maxOptionsSize = 6;
+
+	// Task
+	m_ui->exercisePageTaskLabel->setText(hieroglyph->getSymbol());
+
+	// Answer
+	m_currentAnswer = hieroglyph->getRandomTranslations(maxAnswersSize);
+
+	// Options
+	std::vector<QString> options = m_currentAnswer;
+	for (unsigned int i = 0; i < otherHieroglyphs.size() && options.size() < maxOptionsSize; ++i) {
+		std::vector<QString> translations = otherHieroglyphs[i]->getRandomTranslations(1);
+		if (translations.size() > 0) {
+			options.push_back(translations[0]);
+		}
+	}
+
+	m_currentOptionsFont = QFont(App::getDefaultFont(), 12, 10);
+	updateOptions<QCheckBox>(options);
+}
+
+void PageExercise::makeTranslationKanjiTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs)
+{
+	unsigned int maxOptionsSize = 6;
+
+	// Task
+	std::vector<QString> translations = hieroglyph->getRandomTranslations(1);
+	if (translations.size() > 0) {
+		m_ui->exercisePageTaskLabel->setText(translations[0]);
+	}
+	else {
+		m_ui->exercisePageTaskLabel->setText("--"); // don't know how to handle
+	}
+
+	// Answer
+	m_currentAnswer = {hieroglyph->getSymbol()};
+
+	// Options
+	std::vector<QString> options = m_currentAnswer;
+	for (unsigned int i = 0; i < otherHieroglyphs.size() && options.size() < maxOptionsSize; ++i) {
+		options.push_back(otherHieroglyphs[i]->getSymbol());
+	}
+
+	m_currentOptionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
+	updateOptions<QRadioButton>(options);
+}
+
+void PageExercise::makeKanjiReadingTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs)
+{
+	unsigned int maxAnswersSize = 3;
+	unsigned int maxOptionsSize = 6;
+
+	// Task
+	m_ui->exercisePageTaskLabel->setText(hieroglyph->getSymbol());
+
+	// Answer
+	std::vector<QString> kunyomi = hieroglyph->getRandomKunyomi(maxAnswersSize / 2);
+	std::vector<QString> onyomi = hieroglyph->getRandomOnyomi(maxAnswersSize - maxAnswersSize / 2);
+
+	m_currentAnswer = kunyomi;
+	m_currentAnswer.insert(m_currentAnswer.end(), onyomi.begin(), onyomi.end());
+
+	// Options
+	std::vector<QString> options = m_currentAnswer;
+	for (unsigned int i = 0; i < otherHieroglyphs.size() && options.size() < maxOptionsSize; ++i) {
+		int readingType = rand() % 2;
+		kunyomi = otherHieroglyphs[i]->getRandomKunyomi(readingType);
+		onyomi = otherHieroglyphs[i]->getRandomOnyomi(1 - readingType);
+
+		options.insert(options.end(), kunyomi.begin(), kunyomi.end());
+		options.insert(options.end(), onyomi.begin(), onyomi.end());
+	}
+
+	m_currentOptionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
+	updateOptions<QCheckBox>(options);
+}
+
+
+template<class QOptionType>
+void PageExercise::updateOptions(std::vector<QString> options)
+{
 	QLayoutItem* item;
 	while ((item = m_ui->exercisePageOptionsList->takeAt(0)) != nullptr)
 	{
 		delete item->widget();
 		delete item;
 	}
-
-	unsigned int maxAnswersSize = rand() % 2 + 1;
-	unsigned int maxOptionsSize = 6;
-
-	std::vector<Hieroglyph*> otherHieroglyphs = m_hieroglyphs;
-	otherHieroglyphs.erase(otherHieroglyphs.begin() + m_currentHieroglyph);
-	std::random_shuffle(otherHieroglyphs.begin(), otherHieroglyphs.end());
-
-	QFont optionsFont;
-	std::vector<QString> options;
-
-	switch (m_currentExerciseType) {
-	case ExerciseType::KanjiTranslation:
-	{
-		// Task
-		m_currentTask = hieroglyph->getSymbol();
-
-		// Answer
-		m_currentAnswer = hieroglyph->getRandomTranslations(maxAnswersSize);
-
-		// Options
-		options = m_currentAnswer;
-		for (unsigned int i = 0; i < otherHieroglyphs.size() && options.size() < maxOptionsSize; ++i) {
-			std::vector<QString> translations = otherHieroglyphs[i]->getRandomTranslations(1);
-			if (translations.size() > 0) {
-				options.push_back(translations[0]);
-			}
-		}
-		optionsFont = QFont(App::getDefaultFont(), 12, 10);
-	}
-		break;
-	case ExerciseType::TranslationKanji:
-	{
-		// Task
-		std::vector<QString> translations = hieroglyph->getRandomTranslations(1);
-		if (translations.size() > 0) {
-			m_currentTask = translations[0];
-		}
-
-		// Answer
-		m_currentAnswer.push_back(hieroglyph->getSymbol());
-
-		// Options
-		options = m_currentAnswer;
-		for (unsigned int i = 0; i < otherHieroglyphs.size() && options.size() < maxOptionsSize; ++i) {
-			options.push_back(otherHieroglyphs[i]->getSymbol());
-		}
-		optionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
-	}
-		break;
-	case ExerciseType::KanjiReading:
-	{
-		// Task
-		m_currentTask = hieroglyph->getSymbol();
-
-		// Answer
-		maxAnswersSize = 3; // logic change
-		std::vector<QString> kunyomi = hieroglyph->getRandomKunyomi(maxAnswersSize / 2);
-		std::vector<QString> onyomi = hieroglyph->getRandomOnyomi(maxAnswersSize - maxAnswersSize / 2);
-
-		m_currentAnswer.insert(m_currentAnswer.end(), kunyomi.begin(), kunyomi.end());
-		m_currentAnswer.insert(m_currentAnswer.end(), onyomi.begin(), onyomi.end());
-
-
-		// Options
-		options = m_currentAnswer;
-		for (unsigned int i = 0; i < otherHieroglyphs.size() && options.size() < maxOptionsSize; ++i) {
-			int readingType = rand() % 2;
-			kunyomi = otherHieroglyphs[i]->getRandomKunyomi(readingType);
-			onyomi = otherHieroglyphs[i]->getRandomOnyomi(1 - readingType);
-
-			options.insert(options.end(), kunyomi.begin(), kunyomi.end());
-			options.insert(options.end(), onyomi.begin(), onyomi.end());
-		}
-		optionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
-	}
-		break;
-	default:
-		break;
-	}
-
-	// Task
-	m_ui->exercisePageTaskLabel->setText(m_currentTask);
-
-	m_maximumScore += m_currentAnswer.size();
-
-	// Options
 	m_currentOptions.clear();
-
 	std::random_shuffle(options.begin(), options.end());
 	for (unsigned int i = 0; i < options.size(); ++i) {
-		switch (m_currentExerciseType) {
-		case ExerciseType::TranslationKanji:
-			m_currentOptions.push_back(new QRadioButton(options[i]));
-			break;
-		default:
-			m_currentOptions.push_back(new QCheckBox(options[i]));
-			break;
-		}
+		m_currentOptions.push_back(new QOptionType(options[i]));
 
 		QAbstractButton* optionItem = m_currentOptions.back();
-		optionItem->setFont(optionsFont);
+		optionItem->setFont(m_currentOptionsFont);
 		m_ui->exercisePageOptionsList->addWidget(optionItem);
 
 		auto handleChanging = [this](bool checked) {
@@ -216,6 +264,6 @@ void PageExercise::updateTask()
 			}
 		};
 
-		connect(optionItem, &QAbstractButton::clicked, this, handleChanging);
+		connect(optionItem, &QAbstractButton::toggled, this, handleChanging);
 	}
 }
