@@ -1,7 +1,7 @@
 #ifndef PAGECATEGORYKANJI_H
 #define PAGECATEGORYKANJI_H
 
-#include "page.h"
+#include "Page.h"
 
 #include "../models/Hieroglyph.h"
 #include "../models/Category.h"

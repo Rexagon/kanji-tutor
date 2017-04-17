@@ -1,4 +1,4 @@
-#include "Pagecategory.h"
+#include "PageCategory.h"
 
 #include <ui_mainwindow.h>
 

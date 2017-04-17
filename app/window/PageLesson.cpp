@@ -2,8 +2,8 @@
 
 #include <ui_mainwindow.h>
 
-#include "../widgets/exerciselistitem.h"
-#include "../widgets/kanjilistitem.h"
+#include "../widgets/ExerciseListItem.h"
+#include "../widgets/KanjiListItem.h"
 
 PageLesson::PageLesson(Ui::MainWindow* ui, PageExercise* pageExercise) :
     Page(ui, Id::LessonPage), m_pageExercise(pageExercise)

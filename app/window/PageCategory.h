@@ -1,7 +1,7 @@
 #ifndef PAGECATEGORY_H
 #define PAGECATEGORY_H
 
-#include "page.h"
+#include "Page.h"
 
 #include "../models/Category.h"
 #include "../models/Lesson.h"

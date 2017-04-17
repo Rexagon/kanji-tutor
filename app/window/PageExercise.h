@@ -1,7 +1,7 @@
 #ifndef PAGEEXERCISE_H
 #define PAGEEXERCISE_H
 
-#include "page.h"
+#include "Page.h"
 
 #include "../models/Hieroglyph.h"
 

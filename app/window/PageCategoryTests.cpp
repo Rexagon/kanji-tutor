@@ -2,7 +2,7 @@
 
 #include <ui_mainwindow.h>
 
-#include "../widgets/exerciselistitem.h"
+#include "../widgets/ExerciseListItem.h"
 
 PageCategoryTests::PageCategoryTests(Ui::MainWindow* ui, PageExercise* pageExercise) :
 	Page(ui, Id::CategoryTestsPage), m_pageExercise(pageExercise)

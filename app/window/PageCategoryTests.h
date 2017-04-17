@@ -1,7 +1,7 @@
 #ifndef PAGECATEGORYTESTS_H
 #define PAGECATEGORYTESTS_H
 
-#include "page.h"
+#include "Page.h"
 
 #include "../models/Category.h"
 

@@ -1,7 +1,7 @@
 #ifndef PAGESTART_H
 #define PAGESTART_H
 
-#include "page.h"
+#include "Page.h"
 
 #include "../models/Category.h"
 

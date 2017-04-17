@@ -3,7 +3,7 @@
 
 #include <functional>
 
-#include "page.h"
+#include "Page.h"
 
 #include "../models/Lesson.h"
 #include "../window/PageExercise.h"
