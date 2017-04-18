@@ -1,5 +1,7 @@
 #include "PageExercise.h"
 
+#include <cmath>
+
 #include <ui_mainwindow.h>
 
 #include <QRadioButton>
