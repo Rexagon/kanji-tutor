@@ -3,17 +3,13 @@
 
 #include <QPushButton>
 
-#include "../models/hieroglyph.h"
+#include "../models/Hieroglyph.h"
 
 class KanjiListItem : public QPushButton
 {
 	Q_OBJECT
 public:
 	explicit KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent = 0);
-
-signals:
-
-public slots:
 };
 
 #endif // KANJILISTITEM_H

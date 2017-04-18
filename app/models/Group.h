@@ -1,7 +1,7 @@
 #ifndef GROUP_H
 #define GROUP_H
 
-#include "category.h"
+#include "Category.h"
 
 class Group
 {
@@ -12,6 +12,7 @@ public:
     QString getName() const;
     QString getTitle() const;
     std::vector<Category*> getCategories();
+	unsigned int getCategoriesNum() const;
 private:
     QString m_name;
     QString m_title;

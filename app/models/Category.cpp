@@ -1,15 +1,17 @@
-#include "category.h"
+#include "Category.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QFile>
 
-Category::Category(const QString& path)
+#include "Group.h"
+
+Category::Category(const QString& path, Group* group, int id) :
+	m_group(group), m_id(id)
 {
     QFile file(path);
-    if (!file.open(QIODevice::ReadOnly)) {
-        QString message = "Невозможно открыть файл \"" + path + "\"";
-        throw std::runtime_error(message.toStdString());
+	if (!file.open(QIODevice::ReadOnly)) {
+		throw QString("Невозможно открыть файл \"" + path + "\"");
     }
 
     QString currentFolder = path.left(path.lastIndexOf('/') + 1);
@@ -20,13 +22,23 @@ Category::Category(const QString& path)
 
     QJsonArray lessons = json["lessons"].toArray();
     for (int i = 0; i < lessons.size(); ++i) {
-        m_lessons.push_back(std::make_unique<Lesson>(currentFolder + lessons[i].toString()));
+		m_lessons.push_back(std::make_unique<Lesson>(currentFolder + lessons[i].toString(), this, i));
     }
 }
 
 Category::~Category()
 {
-    m_lessons.clear();
+	m_lessons.clear();
+}
+
+Group*Category::getGroup() const
+{
+	return m_group;
+}
+
+int Category::getId() const
+{
+	return m_id;
 }
 
 QString Category::getName() const
@@ -40,5 +52,10 @@ std::vector<Lesson*> Category::getLessons()
     for (unsigned int i = 0; i < m_lessons.size(); ++i) {
         result[i] = m_lessons[i].get();
     }
-    return result;
+	return result;
+}
+
+unsigned int Category::getLessonsNum() const
+{
+	return m_lessons.size();
 }

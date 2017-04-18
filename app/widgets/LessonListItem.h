@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "../models/lesson.h"
+#include "../models/Lesson.h"
 
 class LessonListItem : public QPushButton
 {
