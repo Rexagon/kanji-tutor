@@ -47,7 +47,7 @@ void PageCategoryTests::setCategory(Category* category)
 	// Setting events
 	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
 		QString title = category->getName() + ". Тест " + QString::number(i + 1);
-		ExerciseListItem* listItem = m_pageExercise->createListItem(this, title, i, hieroglyphs).release();
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, category->getName(), title, i, hieroglyphs).release();
 		m_ui->categoryTestsPageExercisesList->addWidget(listItem);
 	}
 }

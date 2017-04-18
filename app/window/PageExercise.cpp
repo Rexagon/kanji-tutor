@@ -122,7 +122,7 @@ void PageExercise::setExercise(const QString& title, int type, const std::vector
 	restartExercise();
 }
 
-std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
+std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const QString& categoryName, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
 {
 	QString description;
 	switch (type) {
@@ -139,12 +139,12 @@ std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const
 
 	std::unique_ptr<ExerciseListItem> listItem = std::make_unique<ExerciseListItem>(title, description);
 	ExerciseListItem* listItemPtr = listItem.get();
-	connect(listItemPtr, &ExerciseListItem::onStart, this, [listItemPtr, title, type, hieroglyphs, page, this]() {
+	connect(listItemPtr, &ExerciseListItem::onStart, this, [page, categoryName, title, type, hieroglyphs, listItemPtr, this]() {
 		connect(this, &PageExercise::backButtonPressed, this, [page]() {
 			page->setCurrent();
 		});
-		connect(this, &PageExercise::exerciseCompleted, this, [listItemPtr, title, page](int percentage) {
-			App::setTaskResult(title, percentage);
+		connect(this, &PageExercise::exerciseCompleted, this, [page, categoryName, title, listItemPtr](int percentage) {
+			App::setTaskResult(categoryName, title, percentage);
 			listItemPtr->setPercentage(percentage);
 			page->setCurrent();
 		});

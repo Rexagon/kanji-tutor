@@ -92,14 +92,22 @@ QString App::getKanaFont()
 	return "MS Mincho";
 }
 
-void App::setTaskResult(const QString& title, int percentage)
+void App::setTaskResult(const QString& categoryName, const QString& exercise, int percentage)
 {
-	auto it = m_profile.find(title);
-	if (it == m_profile.end() ||
-		!it.value().isDouble() ||
-		it.value().toInt() < percentage) {
-		m_profile[title] = percentage;
+	QJsonObject category;
+
+	auto categoryIt = m_profile.find(categoryName);
+	if (categoryIt != m_profile.end()) {
+		category = categoryIt.value().toObject();
 	}
+
+	auto exerciseIt = category.find(exercise);
+	if (exerciseIt == category.end() ||
+		exerciseIt.value().toInt() < percentage){
+		category[exercise] = percentage;
+	}
+
+	m_profile[categoryName] = category;
 }
 
 int App::getTaskResult(const QString& title)

@@ -66,7 +66,8 @@ void PageLesson::updateSecondTab(Lesson* lesson)
 	// Creating exercise list
 	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
 		QString title = lesson->getName() + ". Упражнение " + QString::number(i + 1);
-		ExerciseListItem* listItem = m_pageExercise->createListItem(this, title, i, hieroglyphs).release();
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, lesson->getCategory()->getName(),
+																	title, i, hieroglyphs).release();
 		m_ui->lessonPageExercisesList1->addWidget(listItem);
 	}
 }
@@ -99,7 +100,8 @@ void PageLesson::updateThirdTab(Lesson* lesson)
 	// Creating revision exercises list
 	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
 		QString title = lesson->getName() + ". Повторение " + QString::number(i + 1);
-		ExerciseListItem* listItem = m_pageExercise->createListItem(this, title, i, hieroglyphs).release();
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, lesson->getCategory()->getName(),
+																	title, i, hieroglyphs).release();
 		m_ui->lessonPageExercisesList2->addWidget(listItem);
 	}
 }
