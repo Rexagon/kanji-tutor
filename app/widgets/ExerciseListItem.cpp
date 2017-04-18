@@ -23,11 +23,9 @@ ExerciseListItem::ExerciseListItem(const QString& title, const QString& descript
 	gridLayout->addWidget(labelDescription, 1, 0, 1, 1);
 
 	// Percentage
-	int percentage = App::getTaskResult(title);
-	m_labelPercentage = new QLabel();
+	m_labelPercentage = new QLabel("0%");
 	m_labelPercentage->setAlignment(Qt::AlignRight);
 	m_labelPercentage->setFont(QFont(App::getDefaultFont(), 16, 10));
-	setPercentage(percentage);
 	gridLayout->addWidget(m_labelPercentage, 0, 1, 2, 1);
 
 	// Start button

@@ -1,10 +1,14 @@
 #include "PageExercise.h"
 
+#include <cmath>
+
 #include <ui_mainwindow.h>
 
 #include <QRadioButton>
 #include <QCheckBox>
 #include <QTimer>
+
+#include <QDebug>
 
 #include "../App.h"
 
@@ -85,18 +89,18 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 				                         m_hieroglyphs.size(), m_numCorrectTasks,
 				                         m_numHintsUsed);
 
-				connect(m_pageResults.get(), &PageResults::restartButtonPressed, this, [this]() {
-					restartExercise();
-					this->setCurrent();
-				});
-
-				connect(m_pageResults.get(), &PageResults::backButtonPressed, this, [percentage, this]() {
-					emit exerciseCompleted(percentage);
-				});
-
 				m_pageResults->setCurrent();
 			}
 		});
+	});
+
+	connect(m_pageResults.get(), &PageResults::restartButtonPressed, this, [this]() {
+		restartExercise();
+		this->setCurrent();
+	});
+
+	connect(m_pageResults.get(), &PageResults::backButtonPressed, this, [this]() {
+		emit exerciseCompleted(std::floor(static_cast<double>(m_currentScore) / static_cast<double>(m_maximumScore) * 100.0));
 	});
 }
 
@@ -120,7 +124,7 @@ void PageExercise::setExercise(const QString& title, int type, const std::vector
 	restartExercise();
 }
 
-std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
+std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const QString& categoryName, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
 {
 	QString description;
 	switch (type) {
@@ -136,16 +140,23 @@ std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const
 	}
 
 	std::unique_ptr<ExerciseListItem> listItem = std::make_unique<ExerciseListItem>(title, description);
+	listItem->setPercentage(App::getTaskResult(categoryName, title));
 	ExerciseListItem* listItemPtr = listItem.get();
-	connect(listItemPtr, &ExerciseListItem::onStart, this, [listItemPtr, title, type, hieroglyphs, page, this]() {
+	connect(listItemPtr, &ExerciseListItem::onStart, this, [page, categoryName, title, type, hieroglyphs, listItemPtr, this]() {
+		disconnect(this, &PageExercise::backButtonPressed, 0, 0);
 		connect(this, &PageExercise::backButtonPressed, this, [page]() {
+			qDebug() << "back button pressed";
 			page->setCurrent();
 		});
-		connect(this, &PageExercise::exerciseCompleted, this, [listItemPtr, title, page](int percentage) {
-			App::setTaskResult(title, percentage);
+
+		disconnect(this, &PageExercise::exerciseCompleted, 0, 0);
+		connect(this, &PageExercise::exerciseCompleted, this, [page, categoryName, title, listItemPtr](int percentage) {
+			qDebug() << categoryName << title << percentage;
+			App::setTaskResult(categoryName, title, percentage);
 			listItemPtr->setPercentage(percentage);
 			page->setCurrent();
 		});
+
 		setExercise(title, type, hieroglyphs);
 		setCurrent();
 	});

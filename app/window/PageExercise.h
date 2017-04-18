@@ -27,7 +27,8 @@ public:
 
 	void setExercise(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
 
-	std::unique_ptr<ExerciseListItem> createListItem(Page* page, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
+	std::unique_ptr<ExerciseListItem> createListItem(Page* page, const QString& categoryName, const QString& title,
+													 int type, const std::vector<Hieroglyph*>& hieroglyphs);
 signals:
 	void backButtonPressed();
 	void exerciseCompleted(int percentage);
@@ -58,6 +59,7 @@ private:
 	int m_maximumScore;
 	int m_currentScore;
 
+	ExerciseListItem* m_itemToUpdate;
 
 	std::unique_ptr<PageResults> m_pageResults;
 };
