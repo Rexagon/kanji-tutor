@@ -1,16 +1,17 @@
 #include "App.h"
-#include "window/MainWindow.h"
-
-#include <QJsonDocument>
-#include <QMessageBox>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QFile>
 
 #include <ctime>
 
+#include <QJsonDocument>
+#include <QMessageBox>
+#include <QJsonArray>
+#include <QFile>
+
+#include "window/MainWindow.h"
+
 std::unique_ptr<QApplication> App::m_qapp = nullptr;
 std::vector<std::unique_ptr<Group>> App::m_groups;
+QJsonObject App::m_profile;
 
 bool App::init(int argc, char** argv)
 {
@@ -20,16 +21,24 @@ bool App::init(int argc, char** argv)
 	m_qapp = std::make_unique<QApplication>(m_argc, argv);
 
 	try {
-		QFile file("data/categories.json");
-		if (!file.open(QIODevice::ReadOnly)) {
+		// loading lessons
+		QFile categoriesFile("data/categories.json");
+		if (categoriesFile.open(QIODevice::ReadOnly)) {
+			QJsonObject json = QJsonDocument::fromJson(categoriesFile.readAll()).object();
+
+			QJsonArray groups = json["groups"].toArray();
+			for (int i = 0; i < groups.size(); ++i) {
+				m_groups.push_back(std::make_unique<Group>(groups[i].toObject()));
+			}
+		}
+		else {
 			throw QString("Невозможно открыть файл с категориями");
 		}
 
-		QJsonObject json = QJsonDocument::fromJson(file.readAll()).object();
-
-		QJsonArray groups = json["groups"].toArray();
-		for (int i = 0; i < groups.size(); ++i) {
-			m_groups.push_back(std::make_unique<Group>(groups[i].toObject()));
+		// loading profile
+		QFile profileFile("default.prof");
+		if (profileFile.open(QIODevice::ReadOnly)) {
+			m_profile = QJsonDocument::fromBinaryData(profileFile.readAll()).object();
 		}
 	}
 	catch (const QString& e) {
@@ -43,7 +52,6 @@ bool App::init(int argc, char** argv)
 void App::start()
 {
 	MainWindow w;
-	w.setWindowIcon(QIcon("icon.png"));
 	w.show();
 
 	m_qapp->exec();
@@ -51,7 +59,11 @@ void App::start()
 
 void App::close()
 {
-	// TODO: save profile here
+	QFile profileFile("default.prof");
+	if (profileFile.open(QIODevice::WriteOnly)) {
+		QJsonDocument profile(m_profile);
+		profileFile.write(profile.toBinaryData());
+	}
 
 	m_qapp.reset();
 }
@@ -78,4 +90,35 @@ QString App::getHieroglyphsFont()
 QString App::getKanaFont()
 {
 	return "MS Mincho";
+}
+
+void App::setTaskResult(const QString& title, int percentage)
+{
+	auto it = m_profile.find(title);
+	if (it == m_profile.end() ||
+		!it.value().isDouble() ||
+		it.value().toInt() < percentage) {
+		m_profile[title] = percentage;
+	}
+}
+
+int App::getTaskResult(const QString& title)
+{
+	auto it = m_profile.find(title);
+	if (it == m_profile.end()) {
+		return 0;
+	}
+	else {
+		return it.value().toInt();
+	}
+}
+
+void App::resetProfile()
+{
+	m_profile = QJsonObject();
+}
+
+QJsonObject& App::getProfile()
+{
+	return m_profile;
 }

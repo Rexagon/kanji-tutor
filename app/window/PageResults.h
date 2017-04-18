@@ -9,7 +9,7 @@ class PageResults : public Page
 public:
 	PageResults(Ui::MainWindow* ui);
 
-	void setResult(const QString& title, int maxScore, int score, int numTasks, int numCorrectTasks);
+	void setResult(const QString& title, int percentage, int numTasks, int numCorrectTasks, int numHintsUsed);
 signals:
 	void backButtonPressed();
 	void restartButtonPressed();

@@ -52,35 +52,23 @@ void PageLesson::updateFirstTab(Lesson* lesson)
 void PageLesson::updateSecondTab(Lesson* lesson)
 {
 	QLayoutItem* item;
-	while ((item = m_ui->lessonPageExercisesList->takeAt(0)) != nullptr)
+	while ((item = m_ui->lessonPageExercisesList1->takeAt(0)) != nullptr)
 	{
 		delete item->widget();
 		delete item;
 	}
 
-	m_ui->lessonPageExercisesList->setAlignment(Qt::AlignTop);
+	m_ui->lessonPageExercisesList1->setAlignment(Qt::AlignTop);
 
 	// Creating hieroglyphs set
 	std::vector<Hieroglyph*> hieroglyphs = lesson->getHieroglyphs();
 
-	// Setting events
-	ExerciseListItem* firstExercise = new ExerciseListItem("Упражнение 1", "Кандзи/русский перевод");
-	connect(firstExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(lesson->getName() + ". Упражнение 1",
-							 ExerciseType::KanjiTranslation, hieroglyphs));
-	m_ui->lessonPageExercisesList->addWidget(firstExercise);
-
-	ExerciseListItem* secondExercise = new ExerciseListItem("Упражнение 2", "Русский перевод/кандзи");
-	connect(secondExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(lesson->getName() + ". Упражнение 2",
-							 ExerciseType::TranslationKanji, hieroglyphs));
-	m_ui->lessonPageExercisesList->addWidget(secondExercise);
-
-	ExerciseListItem* thirdExercise = new ExerciseListItem("Упражнение 3", "Кандзи/чтение");
-	connect(thirdExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(lesson->getName() + ". Упражнение 3",
-							 ExerciseType::KanjiReading, hieroglyphs));
-	m_ui->lessonPageExercisesList->addWidget(thirdExercise);
+	// Creating exercise list
+	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
+		QString title = lesson->getName() + ". Упражнение " + QString::number(i + 1);
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, title, i, hieroglyphs).release();
+		m_ui->lessonPageExercisesList1->addWidget(listItem);
+	}
 }
 
 void PageLesson::updateThirdTab(Lesson* lesson)
@@ -108,36 +96,10 @@ void PageLesson::updateThirdTab(Lesson* lesson)
 	}
 	std::random_shuffle(hieroglyphs.begin(), hieroglyphs.end());
 
-	// Setting events
-	ExerciseListItem* firstRevisionExercise = new ExerciseListItem("Повторение 1", "Кандзи/русский перевод");
-	connect(firstRevisionExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(lesson->getName() + ". Повторение 1",
-							 ExerciseType::KanjiTranslation, hieroglyphs));
-	m_ui->lessonPageExercisesList2->addWidget(firstRevisionExercise);
-
-	ExerciseListItem* secondRevisionExercise = new ExerciseListItem("Повторение 2", "Русский перевод/кандзи");
-	connect(secondRevisionExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(lesson->getName() + ". Повторение 2",
-							 ExerciseType::TranslationKanji, hieroglyphs));
-	m_ui->lessonPageExercisesList2->addWidget(secondRevisionExercise);
-
-	ExerciseListItem* thirdRevisionExercise = new ExerciseListItem("Повторение 3", "Кандзи/чтение");
-	connect(thirdRevisionExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(lesson->getName() + ". Повторение 3",
-							 ExerciseType::KanjiReading, hieroglyphs));
-	m_ui->lessonPageExercisesList2->addWidget(thirdRevisionExercise);
-}
-
-std::function<void ()> PageLesson::createStartEvent(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
-{
-	return [title, type, hieroglyphs, this]() {
-		connect(m_pageExercise, &PageExercise::backButtonPressed, this, [this]() {
-			this->setCurrent();
-		});
-		connect(m_pageExercise, &PageExercise::exerciseCompleted, this, [this](int maximumScore, int score) {
-			this->setCurrent();
-		});
-		m_pageExercise->setExercise(title, type, hieroglyphs);
-		m_pageExercise->setCurrent();
-	};
+	// Creating revision exercises list
+	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
+		QString title = lesson->getName() + ". Повторение " + QString::number(i + 1);
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, title, i, hieroglyphs).release();
+		m_ui->lessonPageExercisesList2->addWidget(listItem);
+	}
 }

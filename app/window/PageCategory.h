@@ -1,10 +1,9 @@
 #ifndef PAGECATEGORY_H
 #define PAGECATEGORY_H
 
-#include "Page.h"
-
 #include "../models/Category.h"
 #include "../models/Lesson.h"
+#include "Page.h"
 
 class PageCategory : public Page
 {

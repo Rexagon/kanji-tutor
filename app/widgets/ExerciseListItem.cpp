@@ -23,11 +23,12 @@ ExerciseListItem::ExerciseListItem(const QString& title, const QString& descript
 	gridLayout->addWidget(labelDescription, 1, 0, 1, 1);
 
 	// Percentage
-	// TODO: get info from lesson or profile
-	QLabel* labelPercentage = new QLabel("0%");
-	labelPercentage->setAlignment(Qt::AlignRight);
-	labelPercentage->setFont(QFont(App::getDefaultFont(), 16, 10));
-	gridLayout->addWidget(labelPercentage, 0, 1, 2, 1);
+	int percentage = App::getTaskResult(title);
+	m_labelPercentage = new QLabel();
+	m_labelPercentage->setAlignment(Qt::AlignRight);
+	m_labelPercentage->setFont(QFont(App::getDefaultFont(), 16, 10));
+	setPercentage(percentage);
+	gridLayout->addWidget(m_labelPercentage, 0, 1, 2, 1);
 
 	// Start button
 	QPushButton* buttonStart = new QPushButton("Начать");
@@ -43,4 +44,22 @@ ExerciseListItem::ExerciseListItem(const QString& title, const QString& descript
 	horizontalLine->setFrameShape(QFrame::HLine);
 	horizontalLine->setFrameShadow(QFrame::Sunken);
 	gridLayout->addWidget(horizontalLine, 3, 0, 1, 2);
+}
+
+void ExerciseListItem::setPercentage(int percentage)
+{
+	m_labelPercentage->setText(QString::number(percentage) + "%");
+
+	if (percentage < 50) {
+		m_labelPercentage->setStyleSheet("color: red");
+	}
+	else if (percentage >= 50 && percentage < 70) {
+		m_labelPercentage->setStyleSheet("color: orange");
+	}
+	else if (percentage >= 70 && percentage < 90) {
+		m_labelPercentage->setStyleSheet("color: green");
+	}
+	else if (percentage >= 90) {
+		m_labelPercentage->setStyleSheet("color: blue");
+	}
 }

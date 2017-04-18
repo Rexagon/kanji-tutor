@@ -1,7 +1,9 @@
 #include "MainWindow.h"
-#include <ui_mainwindow.h>
 
+#include <ui_mainwindow.h>
 #include <QMessageBox>
+
+#include "../App.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -73,6 +75,22 @@ void MainWindow::createMenu()
 	connect(m_ui->menuItemExit, &QAction::triggered, this, [this]() {
         this->close();
     });
+
+	// Profile menu
+	connect(m_ui->menuItemReset, &QAction::triggered, this, [this]() {
+		QMessageBox messageBox;
+		messageBox.setWindowTitle("Сброс статистики");
+		messageBox.setText("Вы действительно хотите удалить все ваши результаты?");
+		messageBox.setIcon(QMessageBox::Question);
+		QAbstractButton* messageBoxNoButton = messageBox.addButton("Нет", QMessageBox::NoRole);
+		QAbstractButton* messageBoxYesButton = messageBox.addButton("Да", QMessageBox::YesRole);
+		messageBox.exec();
+
+		if (messageBox.clickedButton() == messageBoxYesButton) {
+			App::resetProfile();
+			m_pageStart->setCurrent();
+		}
+	});
 
     // Help menu
 	connect(m_ui->menuItemAbout, &QAction::triggered, this, [this]() {

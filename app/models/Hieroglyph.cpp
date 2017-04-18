@@ -4,8 +4,8 @@
 
 #include "Group.h"
 
-Hieroglyph::Hieroglyph(const QJsonObject &json, Lesson* lesson) :
-	m_lesson(lesson)
+Hieroglyph::Hieroglyph(const QJsonObject &json, Lesson* lesson, int id) :
+	m_lesson(lesson), m_id(id)
 {
     m_symbol = json["s"].toString();
 
@@ -28,6 +28,11 @@ Hieroglyph::Hieroglyph(const QJsonObject &json, Lesson* lesson) :
 Lesson* Hieroglyph::getLesson() const
 {
 	return m_lesson;
+}
+
+int Hieroglyph::getId() const
+{
+	return m_id;
 }
 
 

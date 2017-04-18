@@ -50,3 +50,5 @@ HEADERS	+= \
     window/PageResults.h
 
 FORMS	+= window/mainwindow.ui
+
+RC_FILE = app.rc

@@ -12,9 +12,10 @@ class Lesson;
 class Hieroglyph
 {
 public:
-	Hieroglyph(const QJsonObject& json, Lesson* lesson = nullptr);
+	Hieroglyph(const QJsonObject& json, Lesson* lesson = nullptr, int id = -1);
 
 	Lesson* getLesson() const;
+	int getId() const;
 
     QString getSymbol() const;
 
@@ -37,6 +38,7 @@ public:
 	unsigned int getTranslationsNum() const;
 private:
 	Lesson* m_lesson;
+	int m_id;
 
     QString m_symbol;
 	std::vector<QString> m_kunyomi;

@@ -16,11 +16,9 @@ PageResults::PageResults(Ui::MainWindow* ui) :
 	});
 }
 
-void PageResults::setResult(const QString& title, int maxScore, int score, int numTasks, int numCorrectTasks)
+void PageResults::setResult(const QString& title, int percentage, int numTasks, int numCorrectTasks, int numHintsUsed)
 {
 	m_ui->resultsPageNameLabel->setText(title);
-
-	int percentage = std::floor(static_cast<double>(score) / static_cast<double>(maxScore) * 100.0);
 
 	if (percentage < 50) {
 		m_ui->resultsPageMark->setText("Плохо");
@@ -40,5 +38,6 @@ void PageResults::setResult(const QString& title, int maxScore, int score, int n
 	}
 
 	m_ui->resultsPagePercentage->setText(QString::number(percentage) + "%");
+	m_ui->resultsPageNumHintsUsed->setText(QString::number(numHintsUsed));
 	m_ui->resultsPageNumCorrect->setText(QString::number(numCorrectTasks) + " из " + QString::number(numTasks));
 }

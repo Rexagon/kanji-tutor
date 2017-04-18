@@ -3,18 +3,20 @@
 
 #include <memory>
 
-#include "Page.h"
+#include <QAbstractButton>
+#include <QTimer>
 
+#include "../widgets/ExerciseListItem.h"
 #include "../models/Hieroglyph.h"
 #include "PageResults.h"
 
-#include <QAbstractButton>
-#include <QTimer>
 
 enum ExerciseType {
 	KanjiTranslation,
 	TranslationKanji,
-	KanjiReading
+	KanjiReading,
+
+	ExercisesNum
 };
 
 class PageExercise : public Page
@@ -24,10 +26,14 @@ public:
 	PageExercise(Ui::MainWindow* ui);
 
 	void setExercise(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
+
+	std::unique_ptr<ExerciseListItem> createListItem(Page* page, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
 signals:
 	void backButtonPressed();
-	void exerciseCompleted(int maxScore, int score);
+	void exerciseCompleted(int percentage);
 private:
+	void restartExercise();
+
 	void updateTask();
 
 	void makeKanjiTranslationTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
@@ -48,6 +54,7 @@ private:
 	unsigned int m_currentHieroglyph;
 
 	int m_numCorrectTasks;
+	int m_numHintsUsed;
 	int m_maximumScore;
 	int m_currentScore;
 

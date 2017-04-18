@@ -1,12 +1,8 @@
 #ifndef PAGELESSON_H
 #define PAGELESSON_H
 
-#include <functional>
-
-#include "Page.h"
-
 #include "../models/Lesson.h"
-#include "../window/PageExercise.h"
+#include "PageExercise.h"
 
 class PageLesson : public Page
 {
@@ -22,8 +18,6 @@ private:
 	void updateFirstTab(Lesson* lesson);
 	void updateSecondTab(Lesson* lesson);
 	void updateThirdTab(Lesson* lesson);
-
-	std::function<void ()> createStartEvent(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
 
 	PageExercise* m_pageExercise;
 };

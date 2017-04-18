@@ -8,6 +8,12 @@
 PageCategoryTests::PageCategoryTests(Ui::MainWindow* ui, PageExercise* pageExercise) :
 	Page(ui, Id::CategoryTestsPage), m_pageExercise(pageExercise)
 {
+	m_ui->categoryTestsExercisesContainer->setStyleSheet("\
+	QWidget#categoryTestsExercisesContainer { \
+		background-color: white;\
+		border-top: 1px solid darkGray;\
+	}");
+
 	connect(ui->categoryTestsPageBackButton, &QPushButton::pressed, this, [this]() {
 		emit backButtonPressed();
 	});
@@ -39,35 +45,9 @@ void PageCategoryTests::setCategory(Category* category)
 	}
 
 	// Setting events
-	ExerciseListItem* firstExercise = new ExerciseListItem("Тест 1", "Кандзи/русский перевод");
-	connect(firstExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(category->getName() + ". Тест 1",
-							 ExerciseType::KanjiTranslation, hieroglyphs));
-	m_ui->categoryTestsPageExercisesList->addWidget(firstExercise);
-
-	ExerciseListItem* secondExercise = new ExerciseListItem("Тест 2", "Русский перевод/кандзи");
-	connect(secondExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(category->getName() + ". Тест 2",
-							 ExerciseType::TranslationKanji, hieroglyphs));
-	m_ui->categoryTestsPageExercisesList->addWidget(secondExercise);
-
-	ExerciseListItem* thirdExercise = new ExerciseListItem("Тест 3", "Кандзи/чтение");
-	connect(thirdExercise, &ExerciseListItem::onStart, this,
-			createStartEvent(category->getName() + ". Тест 3",
-							 ExerciseType::KanjiReading, hieroglyphs));
-	m_ui->categoryTestsPageExercisesList->addWidget(thirdExercise);
-}
-
-std::function<void ()> PageCategoryTests::createStartEvent(const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
-{
-	return [title, type, hieroglyphs, this]() {
-		connect(m_pageExercise, &PageExercise::backButtonPressed, this, [this]() {
-			this->setCurrent();
-		});
-		connect(m_pageExercise, &PageExercise::exerciseCompleted, this, [this](int maximumScore, int score) {
-			this->setCurrent();
-		});
-		m_pageExercise->setExercise(title, type, hieroglyphs);
-		m_pageExercise->setCurrent();
-	};
+	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
+		QString title = category->getName() + ". Тест " + QString::number(i + 1);
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, title, i, hieroglyphs).release();
+		m_ui->categoryTestsPageExercisesList->addWidget(listItem);
+	}
 }

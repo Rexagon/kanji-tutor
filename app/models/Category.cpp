@@ -6,8 +6,8 @@
 
 #include "Group.h"
 
-Category::Category(const QString& path, Group* group) :
-	m_group(group)
+Category::Category(const QString& path, Group* group, int id) :
+	m_group(group), m_id(id)
 {
     QFile file(path);
 	if (!file.open(QIODevice::ReadOnly)) {
@@ -34,6 +34,11 @@ Category::~Category()
 Group*Category::getGroup() const
 {
 	return m_group;
+}
+
+int Category::getId() const
+{
+	return m_id;
 }
 
 QString Category::getName() const

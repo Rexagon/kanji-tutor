@@ -27,6 +27,7 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 				if (m_currentOptions[i]->text() == m_currentAnswer[0]) {
 					m_currentOptions[i]->setChecked(true);
 					m_currentScore--;
+					m_numHintsUsed++;
 					break;
 				}
 			}
@@ -37,10 +38,10 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 	connect(m_ui->exercisePageNextButton, &QPushButton::pressed, this, [this]() {
 		m_ui->exercisePageNextButton->setEnabled(false);
 
+		int taskScore = 0;
+
 		for (unsigned int i = 0; i < m_currentOptions.size(); ++i) {
 			m_currentOptions[i]->setEnabled(false);
-
-			unsigned int taskScore = 0;
 
 			bool correct = false;
 			for (unsigned int j = 0; j < m_currentAnswer.size(); ++j) {
@@ -56,13 +57,16 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 					taskScore++;
 				}
 				else {
+					taskScore--;
 					m_currentOptions[i]->setStyleSheet("color: red;");
 				}
 			}
 			else if (correct) {
 				m_currentOptions[i]->setStyleSheet("color: orange;");
 			}
+		}
 
+		if (taskScore > 0) {
 			m_currentScore += taskScore;
 			if (taskScore == m_currentAnswer.size()) {
 				m_numCorrectTasks++;
@@ -74,22 +78,20 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 				updateTask();
 			}
 			else {
+				int percentage = std::floor(static_cast<double>(m_currentScore) / static_cast<double>(m_maximumScore) * 100.0);
+
 				m_pageResults->setResult(m_ui->exercisePageNameLabel->text(),
-				                         m_maximumScore, m_currentScore,
-				                         m_hieroglyphs.size(), m_numCorrectTasks);
+				                         percentage,
+				                         m_hieroglyphs.size(), m_numCorrectTasks,
+				                         m_numHintsUsed);
 
 				connect(m_pageResults.get(), &PageResults::restartButtonPressed, this, [this]() {
-					std::random_shuffle(m_hieroglyphs.begin(), m_hieroglyphs.end());
-					m_currentHieroglyph = 0;
-					m_maximumScore = 0;
-					m_currentScore = 0;
-					m_numCorrectTasks = 0;
-					updateTask();
+					restartExercise();
 					this->setCurrent();
 				});
 
-				connect(m_pageResults.get(), &PageResults::backButtonPressed, this, [this]() {
-					emit exerciseCompleted(m_maximumScore, m_currentScore);
+				connect(m_pageResults.get(), &PageResults::backButtonPressed, this, [percentage, this]() {
+					emit exerciseCompleted(percentage);
 				});
 
 				m_pageResults->setCurrent();
@@ -102,14 +104,8 @@ void PageExercise::setExercise(const QString& title, int type, const std::vector
 {
 	m_ui->exercisePageNameLabel->setText(title);
 
-	m_hieroglyphs = hieroglyphs;
-	std::random_shuffle(m_hieroglyphs.begin(), m_hieroglyphs.end());
-
-	m_currentHieroglyph = 0;
 	m_currentExerciseType = type;
-	m_maximumScore = 0;
-	m_currentScore = 0;
-	m_numCorrectTasks = 0;
+	m_hieroglyphs = hieroglyphs;
 
 	switch (m_currentExerciseType) {
 	case ExerciseType::KanjiTranslation:
@@ -121,6 +117,50 @@ void PageExercise::setExercise(const QString& title, int type, const std::vector
 		break;
 	}
 
+	restartExercise();
+}
+
+std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs)
+{
+	QString description;
+	switch (type) {
+	case ExerciseType::KanjiTranslation:
+		description = "Кандзи/русский перевод";
+		break;
+	case ExerciseType::TranslationKanji:
+		description = "Русский перевод/кандзи";
+		break;
+	case ExerciseType::KanjiReading:
+		description = "Кандзи/чтения";
+		break;
+	}
+
+	std::unique_ptr<ExerciseListItem> listItem = std::make_unique<ExerciseListItem>(title, description);
+	ExerciseListItem* listItemPtr = listItem.get();
+	connect(listItemPtr, &ExerciseListItem::onStart, this, [listItemPtr, title, type, hieroglyphs, page, this]() {
+		connect(this, &PageExercise::backButtonPressed, this, [page]() {
+			page->setCurrent();
+		});
+		connect(this, &PageExercise::exerciseCompleted, this, [listItemPtr, title, page](int percentage) {
+			App::setTaskResult(title, percentage);
+			listItemPtr->setPercentage(percentage);
+			page->setCurrent();
+		});
+		setExercise(title, type, hieroglyphs);
+		setCurrent();
+	});
+
+	return std::move(listItem);
+}
+
+void PageExercise::restartExercise()
+{
+	std::random_shuffle(m_hieroglyphs.begin(), m_hieroglyphs.end());
+	m_currentHieroglyph = 0;
+	m_numCorrectTasks = 0;
+	m_maximumScore = 0;
+	m_currentScore = 0;
+	m_numHintsUsed = 0;
 	updateTask();
 }
 

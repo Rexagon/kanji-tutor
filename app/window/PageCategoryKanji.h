@@ -1,10 +1,9 @@
 #ifndef PAGECATEGORYKANJI_H
 #define PAGECATEGORYKANJI_H
 
-#include "Page.h"
-
 #include "../models/Hieroglyph.h"
 #include "../models/Category.h"
+#include "Page.h"
 
 class PageCategoryKanji : public Page
 {

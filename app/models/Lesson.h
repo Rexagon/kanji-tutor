@@ -11,7 +11,7 @@ class Category;
 class Lesson
 {
 public:
-	Lesson(const QString& path, Category* category = nullptr, int id = 0);
+	Lesson(const QString& path, Category* category = nullptr, int id = -1);
     ~Lesson();
 
 	Category* getCategory() const;
