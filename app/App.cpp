@@ -38,7 +38,7 @@ bool App::init(int argc, char** argv)
 		// loading profile
 		QFile profileFile("default.prof");
 		if (profileFile.open(QIODevice::ReadOnly)) {
-			m_profile = QJsonDocument::fromBinaryData(profileFile.readAll()).object();
+			m_profile = QJsonDocument::fromJson(profileFile.readAll()).object();
 		}
 	}
 	catch (const QString& e) {
@@ -62,7 +62,7 @@ void App::close()
 	QFile profileFile("default.prof");
 	if (profileFile.open(QIODevice::WriteOnly)) {
 		QJsonDocument profile(m_profile);
-		profileFile.write(profile.toBinaryData());
+		profileFile.write(profile.toJson());
 	}
 
 	m_qapp.reset();
@@ -110,15 +110,19 @@ void App::setTaskResult(const QString& categoryName, const QString& exercise, in
 	m_profile[categoryName] = category;
 }
 
-int App::getTaskResult(const QString& title)
+int App::getTaskResult(const QString& categoryName, const QString& title)
 {
-	auto it = m_profile.find(title);
-	if (it == m_profile.end()) {
-		return 0;
+	auto categoryIt = m_profile.find(categoryName);
+	if (categoryIt != m_profile.end()) {
+		QJsonObject category = categoryIt.value().toObject();
+
+		auto it = category.find(title);
+		if (it != category.end()) {
+			return it.value().toInt();
+		}
 	}
-	else {
-		return it.value().toInt();
-	}
+
+	return 0;
 }
 
 void App::resetProfile()

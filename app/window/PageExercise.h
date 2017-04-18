@@ -59,6 +59,7 @@ private:
 	int m_maximumScore;
 	int m_currentScore;
 
+	ExerciseListItem* m_itemToUpdate;
 
 	std::unique_ptr<PageResults> m_pageResults;
 };

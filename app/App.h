@@ -20,7 +20,7 @@ public:
 	static QString getKanaFont();
 
 	static void setTaskResult(const QString& categoryName, const QString& exercise, int percentage);
-	static int getTaskResult(const QString& title);
+	static int getTaskResult(const QString& categoryName, const QString& title);
 
 	static QJsonObject& getProfile();
 	static void resetProfile();
