@@ -38,7 +38,7 @@ bool App::init(int argc, char** argv)
 		// loading profile
 		QFile profileFile("default.prof");
 		if (profileFile.open(QIODevice::ReadOnly)) {
-			m_profile = QJsonDocument::fromJson(profileFile.readAll()).object();
+			m_profile = QJsonDocument::fromBinaryData(profileFile.readAll()).object();
 		}
 	}
 	catch (const QString& e) {
@@ -62,7 +62,7 @@ void App::close()
 	QFile profileFile("default.prof");
 	if (profileFile.open(QIODevice::WriteOnly)) {
 		QJsonDocument profile(m_profile);
-		profileFile.write(profile.toJson());
+		profileFile.write(profile.toBinaryData());
 	}
 
 	m_qapp.reset();

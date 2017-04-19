@@ -8,8 +8,6 @@
 #include <QCheckBox>
 #include <QTimer>
 
-#include <QDebug>
-
 #include "../App.h"
 
 using namespace std::chrono_literals;
@@ -145,13 +143,11 @@ std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, const
 	connect(listItemPtr, &ExerciseListItem::onStart, this, [page, categoryName, title, type, hieroglyphs, listItemPtr, this]() {
 		disconnect(this, &PageExercise::backButtonPressed, 0, 0);
 		connect(this, &PageExercise::backButtonPressed, this, [page]() {
-			qDebug() << "back button pressed";
 			page->setCurrent();
 		});
 
 		disconnect(this, &PageExercise::exerciseCompleted, 0, 0);
 		connect(this, &PageExercise::exerciseCompleted, this, [page, categoryName, title, listItemPtr](int percentage) {
-			qDebug() << categoryName << title << percentage;
 			App::setTaskResult(categoryName, title, percentage);
 			listItemPtr->setPercentage(percentage);
 			page->setCurrent();
