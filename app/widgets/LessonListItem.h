@@ -12,8 +12,11 @@ class LessonListItem : public QPushButton
 public:
 	explicit LessonListItem(Lesson* lesson, QWidget *parent = 0);
 
+	void updatePercentage();
 private:
+	Lesson* m_lesson;
 
+	QLabel* m_labelPercentage;
 };
 
 #endif // LESSONLISTITEM_H

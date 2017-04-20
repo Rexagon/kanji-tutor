@@ -28,7 +28,8 @@ SOURCES += \
     window/PageLesson.cpp \
     window/PageStart.cpp \
     App.cpp \
-    window/PageResults.cpp
+    window/PageResults.cpp \
+    models/Exercise.cpp
 
 HEADERS	+= \
     window/MainWindow.h \
@@ -47,7 +48,8 @@ HEADERS	+= \
     widgets/KanjiListItem.h \
     widgets/LessonListItem.h \
     App.h \
-    window/PageResults.h
+    window/PageResults.h \
+    models/Exercise.h
 
 FORMS	+= window/mainwindow.ui
 
