@@ -41,6 +41,8 @@ public:
 	int getCurrentScore() const;
 private:
 	void makeKanjiTranslationTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
+	void makeTranslationKanjiTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
+	void makeKanjiReadingTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
 
 	QString m_categoryName;
 	QString m_title;

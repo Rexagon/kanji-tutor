@@ -17,7 +17,7 @@ void Exercise::restart()
 
 void Exercise::update()
 {
-	m_currentTask++;
+	m_currentTaskNumber++;
 	if (isCompleted()) return;
 
 	m_currentTask.clear();
@@ -26,7 +26,7 @@ void Exercise::update()
 
 	Hieroglyph* hieroglyph = m_hieroglyphs[m_currentTaskNumber];
 	std::vector<Hieroglyph*> otherHieroglyphs = m_hieroglyphs;
-	otherHieroglyphs.erase(otherHieroglyphs.begin() + m_currentTask);
+	otherHieroglyphs.erase(otherHieroglyphs.begin() + m_currentTaskNumber);
 	std::random_shuffle(otherHieroglyphs.begin(), otherHieroglyphs.end());
 
 	switch (m_type) {
@@ -37,7 +37,7 @@ void Exercise::update()
 		makeKanjiTranslationTask(hieroglyph, otherHieroglyphs);
 		break;
 	case KanjiReading:
-		makeKanjiReading(hieroglyph, otherHieroglyphs);
+		makeKanjiReadingTask(hieroglyph, otherHieroglyphs);
 		break;
 	}
 }
@@ -47,6 +47,7 @@ int Exercise::useHint()
 	if (m_currentAnswer.size() > 0) {
 		for (unsigned int i = 0; i < m_currentOptions.size(); ++i) {
 			if (m_currentOptions[i] == m_currentAnswer[0]) {
+				m_numHintsUsed++;
 				return i;
 			}
 		}
@@ -59,7 +60,7 @@ void Exercise::answer(const std::vector<QAbstractButton*> options)
 {
 	int score = 0;
 
-	for (int i = 0; i < options.size(); ++i) {
+	for (unsigned int i = 0; i < options.size(); ++i) {
 		bool correct = false;
 		for (unsigned int j = 0; j < m_currentAnswer.size(); ++j) {
 			if (options[i]->text() == m_currentAnswer[j]) {
@@ -161,7 +162,7 @@ void Exercise::makeKanjiReadingTask(Hieroglyph* hieroglyph, const std::vector<Hi
 
 bool Exercise::isCompleted()
 {
-	return m_currentTaskNumber > m_hieroglyphs.size();
+	return m_currentTaskNumber >= static_cast<int>(m_hieroglyphs.size());
 }
 
 QString Exercise::getCategoryName() const
@@ -186,12 +187,12 @@ int Exercise::getTasksNumber() const
 
 int Exercise::getCurrentTaskNumber() const
 {
-	return m_currentTask;
+	return m_currentTaskNumber;
 }
 
 QString Exercise::getCurrentTask() const
 {
-	return m_currentTaskNumber + 1;
+	return m_currentTask;
 }
 
 std::vector<QString> Exercise::getCurrentAnswer() const

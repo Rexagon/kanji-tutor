@@ -799,6 +799,7 @@
     <property name="title">
      <string>Справка</string>
     </property>
+    <addaction name="menuItemUpdate"/>
     <addaction name="menuItemAbout"/>
    </widget>
    <widget class="QMenu" name="menuProfile">
@@ -824,6 +825,11 @@
   <action name="menuItemReset">
    <property name="text">
     <string>Сбросить статистику</string>
+   </property>
+  </action>
+  <action name="menuItemUpdate">
+   <property name="text">
+    <string>Обновить</string>
    </property>
   </action>
  </widget>
