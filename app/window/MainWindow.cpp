@@ -97,7 +97,7 @@ void MainWindow::createMenu()
 	connect(m_ui->menuItemAbout, &QAction::triggered, this, [this]() {
 		QMessageBox messageBox;
 		messageBox.setWindowTitle("О программе");
-		messageBox.setText("<h3><b>Kanji tutor</b> <small>v1.2</small></h3>");
+		messageBox.setText("<h3><b>Kanji tutor</b> <small>v" + App::getVersion() + "</small></h3>");
 		messageBox.setInformativeText("<p>Небольшой помощник в непростом деле изучения японских иероглифов. С помощью тестов и карточек выучить их будет немного проще.</p>"\
 									  "<p>Все уроки и категории данной программы хранятся как отдельные ресурсы, поэтому при обнаружении каких-то ошибок или неточностей "\
 									  "всё можно исправить самому. Также можно писать и свои уроки. Не стесняйтесь добавлять их в репозиторий.<p><hr>"\

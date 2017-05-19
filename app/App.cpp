@@ -130,6 +130,11 @@ void App::resetProfile()
 	m_profile = QJsonObject();
 }
 
+QString App::getVersion()
+{
+	return "1.3";
+}
+
 QJsonObject& App::getProfile()
 {
 	return m_profile;

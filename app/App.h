@@ -24,6 +24,8 @@ public:
 
 	static QJsonObject& getProfile();
 	static void resetProfile();
+
+	static QString getVersion();
 private:
 	static std::unique_ptr<QApplication> m_qapp;
 
