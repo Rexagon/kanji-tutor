@@ -25,6 +25,8 @@ public:
     Page(Ui::MainWindow* ui, int pageId);
 
     void setCurrent();
+
+	int getId() const;
 protected:
     Ui::MainWindow* m_ui;
     int m_id;

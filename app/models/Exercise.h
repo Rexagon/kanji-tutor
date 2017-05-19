@@ -37,8 +37,8 @@ public:
 
 	virtual QAbstractButton* createOptionItem(const QString& text) const;
 
-	int getNumTaskCompleted() const;
-	int getTasksNumber() const;
+	int getNumTasksCompleted() const;
+	int getNumTasks() const;
 
 	int getCurrentTaskNumber() const;
 	QString getCurrentTask() const;
@@ -49,6 +49,8 @@ public:
 	int getMaximumScore() const;
 	int getCurrentScore() const;
 	int getPercentage() const;
+
+	int getSavedPercentage() const;
 protected:
 	int m_type;
 	QString m_title;
@@ -67,7 +69,6 @@ protected:
 	int m_maximumScore;
 	int m_currentScore;
 	int m_numTasksCompleted;
-
 	int m_numHintsUsed;
 };
 

@@ -726,7 +726,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Правильных заданий:</string>
+          <string>Заданий без ошибок</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

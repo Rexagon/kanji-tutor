@@ -8,6 +8,7 @@
 #include <QCheckBox>
 #include <QTimer>
 
+#include "PageLesson.h"
 #include "../App.h"
 
 using namespace std::chrono_literals;
@@ -24,9 +25,13 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 	});
 
 	connect(m_ui->exercisePageHintButton, &QPushButton::pressed, this, [this]() {
-		if (m_exercise != nullptr && m_exercise->getCurrentAnswer().size() > 0) {
-			m_currentOptions[m_exercise->useHint()];
-			m_ui->exercisePageHintButton->setEnabled(false);
+		if (m_exercise != nullptr) {
+			int answer = m_exercise->useHint();
+			if (answer > -1) {
+				m_currentOptions[answer]->setChecked(true);
+				m_currentOptions[answer]->setEnabled(false);
+				m_ui->exercisePageHintButton->setEnabled(false);
+			}
 		}
 	});
 
@@ -39,7 +44,7 @@ PageExercise::PageExercise(Ui::MainWindow* ui) :
 			if (m_exercise->isCompleted()) {
 				m_pageResults->setResult(m_ui->exercisePageNameLabel->text(),
 										 m_exercise->getPercentage(),
-										 m_exercise->getMaximumScore(), m_exercise->getCurrentScore(),
+										 m_exercise->getNumTasks(), m_exercise->getNumTasksCompleted(),
 										 m_exercise->getNumHintsUsed());
 
 				m_pageResults->setCurrent();
@@ -91,6 +96,14 @@ std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, Exerc
 		connect(this, &PageExercise::exerciseCompleted, this, [page, exercise, listItemPtr](int percentage) {
 			App::setTaskResult(exercise->getCategoryName(), exercise->getTitle(), percentage);
 			listItemPtr->setPercentage(percentage);
+
+			if (page->getId() == Page::LessonPage) {
+				LessonListItem* lessonListItem = dynamic_cast<PageLesson*>(page)->getListItem();
+				if (lessonListItem != nullptr) {
+					lessonListItem->updatePercentage();
+				}
+			}
+
 			page->setCurrent();
 		});
 
@@ -105,7 +118,7 @@ void PageExercise::updateTask()
 {
 	m_exercise->update();
 	m_ui->exercisePageProgress->setText(QString::number(m_exercise->getCurrentTaskNumber() + 1) + "/" +
-										QString::number(m_exercise->getTasksNumber()));
+										QString::number(m_exercise->getNumTasks()));
 	m_ui->exercisePageHintButton->setEnabled(true);
 	m_ui->exercisePageTaskLabel->setText(m_exercise->getCurrentTask());
 
@@ -123,7 +136,7 @@ void PageExercise::updateOptions()
 	m_currentOptions.clear();
 
 	std::vector<QString> options = m_exercise->getCurrentOptions();
-	std::random_shuffle(options.begin(), options.end());
+
 	for (unsigned int i = 0; i < options.size(); ++i) {
 		QAbstractButton* optionItem = m_exercise->createOptionItem(options[i]);
 		m_currentOptions.push_back(optionItem);

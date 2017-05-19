@@ -16,7 +16,7 @@ public:
 
     QString getName() const;
     std::vector<Lesson*> getLessons();
-	unsigned int getLessonsNum() const;
+	unsigned int getNumLessons() const;
 
 	std::vector<Exercise*> getExercises() const;
 private:

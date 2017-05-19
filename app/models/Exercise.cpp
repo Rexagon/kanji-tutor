@@ -1,5 +1,7 @@
 #include "Exercise.h"
 
+#include "App.h"
+
 Exercise::Exercise(const QString& categoryName, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs) :
 	m_type(type), m_title(title), m_categoryName(categoryName), m_hieroglyphs(hieroglyphs),
 	m_currentTaskNumber(-1), m_maximumScore(0), m_currentScore(0), m_numTasksCompleted(0), m_numHintsUsed(0)
@@ -73,6 +75,9 @@ void Exercise::answer(const std::vector<QAbstractButton*>& options)
 
 	if (score > 0) {
 		m_currentScore += score;
+		if (score == m_currentAnswer.size()) {
+			m_numTasksCompleted++;
+		}
 	}
 	m_maximumScore += m_currentAnswer.size();
 }
@@ -117,12 +122,12 @@ int Exercise::getType() const
 	return m_type;
 }
 
-int Exercise::getNumTaskCompleted() const
+int Exercise::getNumTasksCompleted() const
 {
 	return m_numTasksCompleted;
 }
 
-int Exercise::getTasksNumber() const
+int Exercise::getNumTasks() const
 {
 	return m_hieroglyphs.size();
 }
@@ -165,4 +170,9 @@ int Exercise::getCurrentScore() const
 int Exercise::getPercentage() const
 {
 	return std::floor(static_cast<float>(m_currentScore) / static_cast<float>(m_maximumScore) * 100.0f);
+}
+
+int Exercise::getSavedPercentage() const
+{
+	return App::getTaskResult(m_categoryName, m_title);
 }

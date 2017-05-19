@@ -8,7 +8,7 @@ ExerciseKanjiTranslation::ExerciseKanjiTranslation(const QString& categoryName, 
 	Exercise(categoryName, title, KanjiTranslation, hieroglyphs)
 {
 	m_description = "Кандзи/русский перевод";
-	m_taskFont = QFont(App::getHieroglyphsFont(), 24, 20);
+	m_taskFont = QFont(App::getHieroglyphsFont(), 40, 20);
 	m_optionsFont = QFont(App::getDefaultFont(), 12, 10);
 }
 
@@ -38,6 +38,7 @@ void ExerciseKanjiTranslation::update()
 			m_currentOptions.push_back(translations[0]);
 		}
 	}
+	std::random_shuffle(m_currentOptions.begin(), m_currentOptions.end());
 }
 
 QAbstractButton*ExerciseKanjiTranslation::createOptionItem(const QString& text) const

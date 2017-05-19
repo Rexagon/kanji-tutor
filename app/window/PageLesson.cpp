@@ -25,6 +25,16 @@ void PageLesson::setLesson(Lesson* lesson)
 	updateThirdTab(lesson);
 }
 
+void PageLesson::setListItem(LessonListItem* listItem)
+{
+	m_listItem = listItem;
+}
+
+LessonListItem* PageLesson::getListItem()
+{
+	return m_listItem;
+}
+
 void PageLesson::updateFirstTab(Lesson* lesson)
 {
 	m_ui->lessonPageKanjiList->clear();

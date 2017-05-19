@@ -20,7 +20,7 @@ public:
 
 	QString getName() const;
 	std::vector<Hieroglyph*> getHieroglyphs() const;
-	unsigned int getHieroglyphsNum() const;
+	unsigned int getNumHieroglyphs() const;
 
 	std::vector<Exercise*> getExercises() const;
 	std::vector<Exercise*> getRevisionExercises() const;

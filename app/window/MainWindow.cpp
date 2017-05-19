@@ -43,8 +43,9 @@ MainWindow::MainWindow(QWidget *parent) :
 		m_pageCategoryTests->setCurrent();
 	});
 
-	connect(m_pageCategory.get(), &PageCategory::lessonSelected, this, [this](Lesson* lesson) {
+	connect(m_pageCategory.get(), &PageCategory::lessonSelected, this, [this](LessonListItem* listItem, Lesson* lesson) {
 		m_pageLesson->setLesson(lesson);
+		m_pageLesson->setListItem(listItem);
 		m_pageLesson->setCurrent();
 	});
 

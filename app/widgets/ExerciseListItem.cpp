@@ -48,7 +48,10 @@ void ExerciseListItem::setPercentage(int percentage)
 {
 	m_labelPercentage->setText(QString::number(percentage) + "%");
 
-	if (percentage < 50) {
+	if (percentage == 0) {
+		m_labelPercentage->setStyleSheet("color: black");
+	}
+	else if (percentage < 50) {
 		m_labelPercentage->setStyleSheet("color: red");
 	}
 	else if (percentage >= 50 && percentage < 70) {
@@ -58,6 +61,6 @@ void ExerciseListItem::setPercentage(int percentage)
 		m_labelPercentage->setStyleSheet("color: green");
 	}
 	else if (percentage >= 90) {
-		m_labelPercentage->setStyleSheet("color: blue");
+		m_labelPercentage->setStyleSheet("color: #1ece21");
 	}
 }

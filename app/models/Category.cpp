@@ -79,7 +79,7 @@ std::vector<Lesson*> Category::getLessons()
 	return result;
 }
 
-unsigned int Category::getLessonsNum() const
+unsigned int Category::getNumLessons() const
 {
 	return m_lessons.size();
 }

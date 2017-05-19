@@ -9,5 +9,10 @@ Page::Page(Ui::MainWindow *ui, int pageId) :
 
 void Page::setCurrent()
 {
-    m_ui->pageSelector->setCurrentIndex(m_id);
+	m_ui->pageSelector->setCurrentIndex(m_id);
+}
+
+int Page::getId() const
+{
+	return m_id;
 }

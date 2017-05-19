@@ -91,7 +91,7 @@ std::vector<Hieroglyph*> Lesson::getHieroglyphs() const
 	return result;
 }
 
-unsigned int Lesson::getHieroglyphsNum() const
+unsigned int Lesson::getNumHieroglyphs() const
 {
 	return m_hieroglyphs.size();
 }

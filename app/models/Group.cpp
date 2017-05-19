@@ -37,7 +37,7 @@ std::vector<Category*> Group::getCategories()
 	return result;
 }
 
-unsigned int Group::getCategoriesNum() const
+unsigned int Group::getNumCategories() const
 {
 	return m_categories.size();
 }

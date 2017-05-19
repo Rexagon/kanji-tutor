@@ -40,6 +40,7 @@ void ExerciseTranslationKanji::update()
 	for (unsigned int i = 0; i < otherHieroglyphs.size() && m_currentOptions.size() < maxOptionsSize; ++i) {
 		m_currentOptions.push_back(otherHieroglyphs[i]->getSymbol());
 	}
+	std::random_shuffle(m_currentOptions.begin(), m_currentOptions.end());
 }
 
 QAbstractButton*ExerciseTranslationKanji::createOptionItem(const QString& text) const

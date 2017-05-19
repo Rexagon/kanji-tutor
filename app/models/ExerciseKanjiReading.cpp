@@ -9,7 +9,7 @@ ExerciseKanjiReading::ExerciseKanjiReading(const QString& categoryName, const QS
 {
 	m_description = "Кандзи/чтения";
 	m_taskFont = QFont(App::getHieroglyphsFont(), 40, 20);
-	m_optionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
+	m_optionsFont = QFont(App::getKanaFont(), 20, 10);
 }
 
 void ExerciseKanjiReading::update()
@@ -44,6 +44,7 @@ void ExerciseKanjiReading::update()
 		m_currentOptions.insert(m_currentOptions.end(), kunyomi.begin(), kunyomi.end());
 		m_currentOptions.insert(m_currentOptions.end(), onyomi.begin(), onyomi.end());
 	}
+	std::random_shuffle(m_currentOptions.begin(), m_currentOptions.end());
 }
 
 QAbstractButton* ExerciseKanjiReading::createOptionItem(const QString& text) const

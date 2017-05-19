@@ -2,8 +2,6 @@
 
 #include <ui_mainwindow.h>
 
-#include "../widgets/LessonListItem.h"
-
 PageCategory::PageCategory(Ui::MainWindow* ui) :
 	Page(ui, Id::CategoryPage)
 {
@@ -32,8 +30,8 @@ void PageCategory::setCategory(Category* category)
 
 		LessonListItem* widget = new LessonListItem(lesson);
 
-		connect(widget, &LessonListItem::pressed, this, [this, lesson]() {
-			emit lessonSelected(lesson);
+		connect(widget, &LessonListItem::pressed, this, [this, widget, lesson]() {
+			emit lessonSelected(widget, lesson);
 		});
 
 		QListWidgetItem* itemWidget = new QListWidgetItem();

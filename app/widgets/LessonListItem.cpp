@@ -48,4 +48,41 @@ LessonListItem::LessonListItem(Lesson* lesson, QWidget *parent)
 	m_labelPercentage->setFont(QFont(App::getDefaultFont(), 12, 10));
 	m_labelPercentage->setAlignment(Qt::AlignRight);
 	gridLayout->addWidget(m_labelPercentage, 0, 7, 1, 1);
+
+	updatePercentage();
+}
+
+void LessonListItem::updatePercentage()
+{
+	int percentage = 0;
+	int numExercises = 0;
+	std::vector<Exercise*> exercises = m_lesson->getExercises();
+	numExercises += exercises.size();
+	for (auto exercise : exercises) {
+		percentage += exercise->getSavedPercentage();
+	}
+	exercises = m_lesson->getRevisionExercises();
+	numExercises += exercises.size();
+	for (auto exercise : exercises) {
+		percentage += exercise->getSavedPercentage();
+	}
+	percentage = std::floor(static_cast<float>(percentage) / static_cast<float>(numExercises));
+
+	m_labelPercentage->setText(QString::number(percentage) + "%");
+
+	if (percentage == 0) {
+		m_labelPercentage->setStyleSheet("color: black");
+	}
+	else if (percentage < 50) {
+		m_labelPercentage->setStyleSheet("color: red");
+	}
+	else if (percentage >= 50 && percentage < 70) {
+		m_labelPercentage->setStyleSheet("color: orange");
+	}
+	else if (percentage >= 70 && percentage < 90) {
+		m_labelPercentage->setStyleSheet("color: green");
+	}
+	else if (percentage >= 90) {
+		m_labelPercentage->setStyleSheet("color: #1ece21");
+	}
 }
