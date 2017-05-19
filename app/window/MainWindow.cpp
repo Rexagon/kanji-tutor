@@ -82,7 +82,7 @@ void MainWindow::createMenu()
 		messageBox.setWindowTitle("Сброс статистики");
 		messageBox.setText("Вы действительно хотите удалить все ваши результаты?");
 		messageBox.setIcon(QMessageBox::Question);
-		QAbstractButton* messageBoxNoButton = messageBox.addButton("Нет", QMessageBox::NoRole);
+		messageBox.addButton("Нет", QMessageBox::NoRole);
 		QAbstractButton* messageBoxYesButton = messageBox.addButton("Да", QMessageBox::YesRole);
 		messageBox.exec();
 

@@ -7,18 +7,17 @@ Exercise::Exercise(const QString& categoryName, const QString& title, int type, 
 
 void Exercise::restart()
 {
+	std::random_shuffle(m_hieroglyphs.begin(), m_hieroglyphs.end());
 	m_currentTaskNumber = -1;
 	m_maximumScore = 0;
 	m_currentScore = 0;
 	m_numHintsUsed = 0;
-
-	update();
 }
 
 void Exercise::update()
 {
-	m_currentTaskNumber++;
 	if (isCompleted()) return;
+	m_currentTaskNumber++;
 
 	m_currentTask.clear();
 	m_currentAnswer.clear();
@@ -34,7 +33,7 @@ void Exercise::update()
 		makeKanjiTranslationTask(hieroglyph, otherHieroglyphs);
 		break;
 	case TranslationKanji:
-		makeKanjiTranslationTask(hieroglyph, otherHieroglyphs);
+		makeTranslationKanjiTask(hieroglyph, otherHieroglyphs);
 		break;
 	case KanjiReading:
 		makeKanjiReadingTask(hieroglyph, otherHieroglyphs);
@@ -61,6 +60,8 @@ void Exercise::answer(const std::vector<QAbstractButton*> options)
 	int score = 0;
 
 	for (unsigned int i = 0; i < options.size(); ++i) {
+		options[i]->setEnabled(false);
+
 		bool correct = false;
 		for (unsigned int j = 0; j < m_currentAnswer.size(); ++j) {
 			if (options[i]->text() == m_currentAnswer[j]) {
@@ -87,6 +88,7 @@ void Exercise::answer(const std::vector<QAbstractButton*> options)
 	if (score > 0) {
 		m_currentScore += score;
 	}
+	m_maximumScore += m_currentAnswer.size();
 }
 
 void Exercise::makeKanjiTranslationTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs)
@@ -162,7 +164,7 @@ void Exercise::makeKanjiReadingTask(Hieroglyph* hieroglyph, const std::vector<Hi
 
 bool Exercise::isCompleted()
 {
-	return m_currentTaskNumber >= static_cast<int>(m_hieroglyphs.size());
+	return m_currentTaskNumber >= static_cast<int>(m_hieroglyphs.size()) - 1;
 }
 
 QString Exercise::getCategoryName() const
@@ -205,6 +207,11 @@ std::vector<QString> Exercise::getCurrentOptions() const
 	return m_currentOptions;
 }
 
+int Exercise::getNumHintsUsed() const
+{
+	return m_numHintsUsed;
+}
+
 int Exercise::getMaximumScore() const
 {
 	return m_maximumScore;
@@ -213,4 +220,9 @@ int Exercise::getMaximumScore() const
 int Exercise::getCurrentScore() const
 {
 	return m_currentScore;
+}
+
+int Exercise::getPercentage() const
+{
+	return std::floor(static_cast<float>(m_currentScore) / static_cast<float>(m_maximumScore) * 100.0f);
 }

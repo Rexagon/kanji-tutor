@@ -37,8 +37,10 @@ public:
 	std::vector<QString> getCurrentAnswer() const;
 	std::vector<QString> getCurrentOptions() const;
 
+	int getNumHintsUsed() const;
 	int getMaximumScore() const;
 	int getCurrentScore() const;
+	int getPercentage() const;
 private:
 	void makeKanjiTranslationTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
 	void makeTranslationKanjiTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
