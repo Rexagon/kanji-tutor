@@ -4,6 +4,9 @@
 #include <QJsonArray>
 #include <QFile>
 
+#include "ExerciseKanjiTranslation.h"
+#include "ExerciseTranslationKanji.h"
+#include "ExerciseKanjiReading.h"
 #include "Group.h"
 
 Category::Category(const QString& path, Group* group, int id) :
@@ -24,6 +27,27 @@ Category::Category(const QString& path, Group* group, int id) :
     for (int i = 0; i < lessons.size(); ++i) {
 		m_lessons.push_back(std::make_unique<Lesson>(currentFolder + lessons[i].toString(), this, i));
     }
+
+	// Creating exercises
+	unsigned int hieroglyphsNum = 50;
+	std::vector<Hieroglyph*> hieroglyphs;
+	for (unsigned int i = 0; i < m_lessons.size(); ++i) {
+		std::vector<Hieroglyph*> lessonHieroglyphs = m_lessons[i]->getHieroglyphs();
+		hieroglyphs.insert(hieroglyphs.end(), lessonHieroglyphs.begin(), lessonHieroglyphs.end());
+	}
+	std::random_shuffle(hieroglyphs.begin(), hieroglyphs.end());
+	if (hieroglyphs.size() > hieroglyphsNum) {
+		hieroglyphs.erase(hieroglyphs.begin() + hieroglyphsNum, hieroglyphs.end());
+	}
+
+	QString title = m_name + ". Тест " + QString::number(1);
+	m_exercises.push_back(std::make_unique<ExerciseKanjiTranslation>(m_name, title, hieroglyphs));
+
+	title = m_name + ". Тест " + QString::number(2);
+	m_exercises.push_back(std::make_unique<ExerciseTranslationKanji>(m_name, title, hieroglyphs));
+
+	title = m_name + ". Тест " + QString::number(3);
+	m_exercises.push_back(std::make_unique<ExerciseKanjiReading>(m_name, title, hieroglyphs));
 }
 
 Category::~Category()
@@ -58,4 +82,13 @@ std::vector<Lesson*> Category::getLessons()
 unsigned int Category::getLessonsNum() const
 {
 	return m_lessons.size();
+}
+
+std::vector<Exercise*> Category::getExercises() const
+{
+	std::vector<Exercise*> result(m_exercises.size());
+	for (unsigned int i = 0; i < m_exercises.size(); ++i) {
+		result[i] = m_exercises[i].get();
+	}
+	return result;
 }

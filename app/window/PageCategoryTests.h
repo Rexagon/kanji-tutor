@@ -14,7 +14,6 @@ public:
 signals:
 	void backButtonPressed();
 private:
-	std::vector<std::unique_ptr<Exercise>> m_exercises;
 	PageExercise* m_pageExercise;
 };
 

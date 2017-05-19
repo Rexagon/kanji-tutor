@@ -29,7 +29,10 @@ SOURCES += \
     window/PageStart.cpp \
     App.cpp \
     window/PageResults.cpp \
-    models/Exercise.cpp
+    models/Exercise.cpp \
+    models/ExerciseKanjiTranslation.cpp \
+    models/ExerciseTranslationKanji.cpp \
+    models/ExerciseKanjiReading.cpp
 
 HEADERS	+= \
     window/MainWindow.h \
@@ -49,7 +52,10 @@ HEADERS	+= \
     widgets/LessonListItem.h \
     App.h \
     window/PageResults.h \
-    models/Exercise.h
+    models/Exercise.h \
+    models/ExerciseKanjiTranslation.h \
+    models/ExerciseTranslationKanji.h \
+    models/ExerciseKanjiReading.h
 
 FORMS	+= window/mainwindow.ui
 

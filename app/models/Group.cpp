@@ -20,7 +20,7 @@ Group::~Group()
 
 QString Group::getName() const
 {
-    return m_name;
+	return m_name;
 }
 
 QString Group::getTitle() const

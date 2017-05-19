@@ -68,21 +68,7 @@ void PageExercise::setExercise(Exercise* exercise)
 	m_exercise = exercise;
 
 	m_ui->exercisePageNameLabel->setText(m_exercise->getTitle());
-
-	switch (m_exercise->getType()) {
-	case Exercise::KanjiTranslation:
-		m_ui->exercisePageTaskLabel->setFont(QFont(App::getHieroglyphsFont(), 24, 20));
-		m_currentOptionsFont = QFont(App::getDefaultFont(), 12, 10);
-		break;
-	case Exercise::TranslationKanji:
-		m_ui->exercisePageTaskLabel->setFont(QFont(App::getDefaultFont(), 24, 20));
-		m_currentOptionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
-		break;
-	case Exercise::KanjiReading:
-		m_ui->exercisePageTaskLabel->setFont(QFont(App::getHieroglyphsFont(), 40, 20));
-		m_currentOptionsFont = QFont(App::getHieroglyphsFont(), 20, 10);
-		break;
-	}
+	m_ui->exercisePageTaskLabel->setFont(m_exercise->getTaskFont());
 
 	m_exercise->restart();
 	updateTask();
@@ -92,20 +78,7 @@ std::unique_ptr<ExerciseListItem> PageExercise::createListItem(Page* page, Exerc
 {
 	if (exercise == nullptr) return nullptr;
 
-	QString description;
-	switch (exercise->getType()) {
-	case Exercise::KanjiTranslation:
-		description = "Кандзи/русский перевод";
-		break;
-	case Exercise::TranslationKanji:
-		description = "Русский перевод/кандзи";
-		break;
-	case Exercise::KanjiReading:
-		description = "Кандзи/чтения";
-		break;
-	}
-
-	std::unique_ptr<ExerciseListItem> listItem = std::make_unique<ExerciseListItem>(exercise->getTitle(), description);
+	std::unique_ptr<ExerciseListItem> listItem = std::make_unique<ExerciseListItem>(exercise->getTitle(), exercise->getDescription());
 	listItem->setPercentage(App::getTaskResult(exercise->getCategoryName(), exercise->getTitle()));
 	ExerciseListItem* listItemPtr = listItem.get();
 	connect(listItemPtr, &ExerciseListItem::onStart, this, [exercise, page, listItemPtr, this]() {
@@ -136,19 +109,10 @@ void PageExercise::updateTask()
 	m_ui->exercisePageHintButton->setEnabled(true);
 	m_ui->exercisePageTaskLabel->setText(m_exercise->getCurrentTask());
 
-	switch (m_exercise->getType()) {
-	case Exercise::TranslationKanji:
-		updateOptions<QRadioButton>(m_exercise->getCurrentOptions());
-		break;
-	case Exercise::KanjiTranslation:
-	case Exercise::KanjiReading:
-		updateOptions<QCheckBox>(m_exercise->getCurrentOptions());
-		break;
-	}
+	updateOptions();
 }
 
-template<class QOptionType>
-void PageExercise::updateOptions(std::vector<QString> options)
+void PageExercise::updateOptions()
 {
 	QLayoutItem* item;
 	while ((item = m_ui->exercisePageOptionsList->takeAt(0)) != nullptr)
@@ -157,12 +121,12 @@ void PageExercise::updateOptions(std::vector<QString> options)
 		delete item;
 	}
 	m_currentOptions.clear();
+
+	std::vector<QString> options = m_exercise->getCurrentOptions();
 	std::random_shuffle(options.begin(), options.end());
 	for (unsigned int i = 0; i < options.size(); ++i) {
-		m_currentOptions.push_back(new QOptionType(options[i]));
-
-		QAbstractButton* optionItem = m_currentOptions.back();
-		optionItem->setFont(m_currentOptionsFont);
+		QAbstractButton* optionItem = m_exercise->createOptionItem(options[i]);
+		m_currentOptions.push_back(optionItem);
 		m_ui->exercisePageOptionsList->addWidget(optionItem);
 
 		auto handleChanging = [this](bool checked) {

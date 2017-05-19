@@ -24,18 +24,14 @@ private:
 	void setExercise(Exercise* exercise);
 
 	void updateTask();
-
-	template<class QOptionType>
-	void updateOptions(std::vector<QString> options);
-
-	std::vector<QAbstractButton*> m_currentOptions;
-	QFont m_currentOptionsFont;
+	void updateOptions();
 
 	Exercise* m_exercise;
 
 	ExerciseListItem* m_itemToUpdate;
 
 	std::unique_ptr<PageResults> m_pageResults;
+	std::vector<QAbstractButton*> m_currentOptions;
 };
 
 #endif // PAGEEXERCISE_H

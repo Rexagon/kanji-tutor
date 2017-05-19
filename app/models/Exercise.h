@@ -16,20 +16,28 @@ public:
 		ExercisesNum
 	};
 
-	Exercise(const QString& categoryName, const QString& title, int type, const std::vector<Hieroglyph*> hieroglyphs);
+	Exercise(const QString& categoryName, const QString& title, int type, const std::vector<Hieroglyph*>& hieroglyphs);
+	virtual ~Exercise() {}
 
 	void restart();
-	void update();
+	virtual void update();
 
 	int useHint();
-	void answer(const std::vector<QAbstractButton*> options);
+	void answer(const std::vector<QAbstractButton*>& options);
 
 	bool isCompleted();
 
-	QString getCategoryName() const;
-	QString getTitle() const;
 	int getType() const;
+	QString getTitle() const;
+	QString getDescription() const;
+	QString getCategoryName() const;
 
+	QFont getTaskFont() const;
+	QFont getOptionsFont() const;
+
+	virtual QAbstractButton* createOptionItem(const QString& text) const;
+
+	int getNumTaskCompleted() const;
 	int getTasksNumber() const;
 
 	int getCurrentTaskNumber() const;
@@ -41,15 +49,15 @@ public:
 	int getMaximumScore() const;
 	int getCurrentScore() const;
 	int getPercentage() const;
-private:
-	void makeKanjiTranslationTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
-	void makeTranslationKanjiTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
-	void makeKanjiReadingTask(Hieroglyph* hieroglyph, const std::vector<Hieroglyph*>& otherHieroglyphs);
-
-	QString m_categoryName;
-	QString m_title;
+protected:
 	int m_type;
+	QString m_title;
+	QString m_description;
+	QString m_categoryName;
 	std::vector<Hieroglyph*> m_hieroglyphs;
+
+	QFont m_taskFont;
+	QFont m_optionsFont;
 
 	int m_currentTaskNumber;
 	QString m_currentTask;
@@ -58,6 +66,7 @@ private:
 
 	int m_maximumScore;
 	int m_currentScore;
+	int m_numTasksCompleted;
 
 	int m_numHintsUsed;
 };

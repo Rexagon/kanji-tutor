@@ -19,7 +19,6 @@ private:
 	void updateSecondTab(Lesson* lesson);
 	void updateThirdTab(Lesson* lesson);
 
-	std::vector<std::unique_ptr<Exercise>> m_exercises;
 	PageExercise* m_pageExercise;
 };
 
