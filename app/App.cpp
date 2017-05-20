@@ -20,6 +20,12 @@ bool App::init(int argc, char** argv)
 	static int m_argc = argc;
 	m_qapp = std::make_unique<QApplication>(m_argc, argv);
 
+	QApplication::setApplicationName("kanji-tutor");
+	QApplication::setApplicationVersion("1.3");
+	QApplication::setOrganizationName("live-to-create");
+	QApplication::setOrganizationDomain("live-to-create.com");
+
+
 	try {
 		// loading lessons
 		QFile categoriesFile("data/categories.json");
@@ -65,6 +71,7 @@ void App::close()
 		profileFile.write(profile.toBinaryData());
 	}
 
+	m_qapp->quit();
 	m_qapp.reset();
 }
 
@@ -132,7 +139,7 @@ void App::resetProfile()
 
 QString App::getVersion()
 {
-	return "1.3";
+	return QApplication::applicationVersion();
 }
 
 QJsonObject& App::getProfile()

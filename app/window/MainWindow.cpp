@@ -1,7 +1,9 @@
 #include "MainWindow.h"
 
 #include <ui_mainwindow.h>
+#include <QDesktopServices>
 #include <QMessageBox>
+#include <QUrl>
 
 #include "../App.h"
 
@@ -94,6 +96,13 @@ void MainWindow::createMenu()
 	});
 
     // Help menu
+
+	// Updater
+	connect(m_ui->menuItemUpdate, &QAction::triggered, this, [this]() {
+		QDesktopServices::openUrl(QUrl("https://github.com/Rexagon/kanji-tutor/releases", QUrl::TolerantMode));
+	});
+
+	// Information
 	connect(m_ui->menuItemAbout, &QAction::triggered, this, [this]() {
 		QMessageBox messageBox;
 		messageBox.setWindowTitle("О программе");
