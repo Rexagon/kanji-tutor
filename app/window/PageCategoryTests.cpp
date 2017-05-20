@@ -32,22 +32,10 @@ void PageCategoryTests::setCategory(Category* category)
 
 	m_ui->categoryTestsPageExercisesList->setAlignment(Qt::AlignTop);
 
-	unsigned int hieroglyphsNum = 50;
-	std::vector<Hieroglyph*> hieroglyphs;
-	std::vector<Lesson*> lessons = category->getLessons();
-	for (unsigned int i = 0; i < lessons.size(); ++i) {
-		std::vector<Hieroglyph*> lessonHieroglyphs = lessons[i]->getHieroglyphs();
-		hieroglyphs.insert(hieroglyphs.end(), lessonHieroglyphs.begin(), lessonHieroglyphs.end());
-	}
-	std::random_shuffle(hieroglyphs.begin(), hieroglyphs.end());
-	if (hieroglyphs.size() > hieroglyphsNum) {
-		hieroglyphs.erase(hieroglyphs.begin() + hieroglyphsNum, hieroglyphs.end());
-	}
-
 	// Setting events
-	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
-		QString title = category->getName() + ". Тест " + QString::number(i + 1);
-		ExerciseListItem* listItem = m_pageExercise->createListItem(this, category->getName(), title, i, hieroglyphs).release();
+	std::vector<Exercise*> exercises = category->getExercises();
+	for (unsigned int i = 0; i < exercises.size(); ++i) {
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, exercises[i]).release();
 		m_ui->categoryTestsPageExercisesList->addWidget(listItem);
 	}
 }

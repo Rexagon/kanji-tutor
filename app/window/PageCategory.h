@@ -1,8 +1,8 @@
 #ifndef PAGECATEGORY_H
 #define PAGECATEGORY_H
 
+#include "../widgets/LessonListItem.h"
 #include "../models/Category.h"
-#include "../models/Lesson.h"
 #include "Page.h"
 
 class PageCategory : public Page
@@ -16,7 +16,7 @@ signals:
 	void backButtonPressed();
 	void kanjiButtonPressed(Category* category);
 	void testsButtonPressed(Category* category);
-	void lessonSelected(Lesson* lesson);
+	void lessonSelected(LessonListItem* listItem, Lesson* lesson);
 };
 
 #endif // PAGECATEGORY_H

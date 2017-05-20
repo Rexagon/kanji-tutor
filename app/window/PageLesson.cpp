@@ -6,8 +6,6 @@
 #include "../widgets/KanjiListItem.h"
 #include "../models/Category.h"
 
-#include <QDebug>
-
 PageLesson::PageLesson(Ui::MainWindow* ui, PageExercise* pageExercise) :
     Page(ui, Id::LessonPage), m_pageExercise(pageExercise)
 {
@@ -25,6 +23,16 @@ void PageLesson::setLesson(Lesson* lesson)
 	updateFirstTab(lesson);
 	updateSecondTab(lesson);
 	updateThirdTab(lesson);
+}
+
+void PageLesson::setListItem(LessonListItem* listItem)
+{
+	m_listItem = listItem;
+}
+
+LessonListItem* PageLesson::getListItem()
+{
+	return m_listItem;
 }
 
 void PageLesson::updateFirstTab(Lesson* lesson)
@@ -60,14 +68,10 @@ void PageLesson::updateSecondTab(Lesson* lesson)
 
 	m_ui->lessonPageExercisesList1->setAlignment(Qt::AlignTop);
 
-	// Creating hieroglyphs set
-	std::vector<Hieroglyph*> hieroglyphs = lesson->getHieroglyphs();
-
 	// Creating exercise list
-	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
-		QString title = lesson->getName() + ". Упражнение " + QString::number(i + 1);
-		ExerciseListItem* listItem = m_pageExercise->createListItem(this, lesson->getCategory()->getName(),
-																	title, i, hieroglyphs).release();
+	std::vector<Exercise*> exercises = lesson->getExercises();
+	for (unsigned int i = 0; i < exercises.size(); ++i) {
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, exercises[i]).release();
 		m_ui->lessonPageExercisesList1->addWidget(listItem);
 	}
 }
@@ -83,25 +87,10 @@ void PageLesson::updateThirdTab(Lesson* lesson)
 
 	m_ui->lessonPageExercisesList2->setAlignment(Qt::AlignTop);
 
-	// Creating hieroglyphs set
-	unsigned int hieroglyphsNum = 25;
-	std::vector<Hieroglyph*> hieroglyphs;
-	std::vector<Lesson*> lessons = lesson->getCategory()->getLessons();
-	for (int i = lesson->getId(); i > -1 && lesson->getId() - i < 4; --i) {
-		std::vector<Hieroglyph*> lessonHieroglyphs = lessons[i]->getHieroglyphs();
-		hieroglyphs.insert(hieroglyphs.end(), lessonHieroglyphs.begin(), lessonHieroglyphs.end());
-	}
-	std::random_shuffle(hieroglyphs.begin() + lesson->getHieroglyphsNum(), hieroglyphs.end());
-	if (hieroglyphs.size() > hieroglyphsNum) {
-		hieroglyphs.erase(hieroglyphs.begin() + hieroglyphsNum, hieroglyphs.end());
-	}
-	std::random_shuffle(hieroglyphs.begin(), hieroglyphs.end());
-
 	// Creating revision exercises list
-	for (int i = 0; i < ExerciseType::ExercisesNum; ++i) {
-		QString title = lesson->getName() + ". Повторение " + QString::number(i + 1);
-		ExerciseListItem* listItem = m_pageExercise->createListItem(this, lesson->getCategory()->getName(),
-																	title, i, hieroglyphs).release();
+	std::vector<Exercise*> exercises = lesson->getRevisionExercises();
+	for (unsigned int i = 0; i < exercises.size(); ++i) {
+		ExerciseListItem* listItem = m_pageExercise->createListItem(this, exercises[i]).release();
 		m_ui->lessonPageExercisesList2->addWidget(listItem);
 	}
 }

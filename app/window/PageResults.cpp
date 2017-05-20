@@ -34,7 +34,7 @@ void PageResults::setResult(const QString& title, int percentage, int numTasks, 
 	}
 	else if (percentage >= 90) {
 		m_ui->resultsPageMark->setText("Отлично");
-		m_ui->resultsPageMark->setStyleSheet("color: blue");
+		m_ui->resultsPageMark->setStyleSheet("color: #1ece21");
 	}
 
 	m_ui->resultsPagePercentage->setText(QString::number(percentage) + "%");

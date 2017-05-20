@@ -1,7 +1,9 @@
 #include "MainWindow.h"
 
 #include <ui_mainwindow.h>
+#include <QDesktopServices>
 #include <QMessageBox>
+#include <QUrl>
 
 #include "../App.h"
 
@@ -43,8 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
 		m_pageCategoryTests->setCurrent();
 	});
 
-	connect(m_pageCategory.get(), &PageCategory::lessonSelected, this, [this](Lesson* lesson) {
+	connect(m_pageCategory.get(), &PageCategory::lessonSelected, this, [this](LessonListItem* listItem, Lesson* lesson) {
 		m_pageLesson->setLesson(lesson);
+		m_pageLesson->setListItem(listItem);
 		m_pageLesson->setCurrent();
 	});
 
@@ -82,7 +85,7 @@ void MainWindow::createMenu()
 		messageBox.setWindowTitle("Сброс статистики");
 		messageBox.setText("Вы действительно хотите удалить все ваши результаты?");
 		messageBox.setIcon(QMessageBox::Question);
-		QAbstractButton* messageBoxNoButton = messageBox.addButton("Нет", QMessageBox::NoRole);
+		messageBox.addButton("Нет", QMessageBox::NoRole);
 		QAbstractButton* messageBoxYesButton = messageBox.addButton("Да", QMessageBox::YesRole);
 		messageBox.exec();
 
@@ -93,10 +96,17 @@ void MainWindow::createMenu()
 	});
 
     // Help menu
+
+	// Updater
+	connect(m_ui->menuItemUpdate, &QAction::triggered, this, [this]() {
+		QDesktopServices::openUrl(QUrl("https://github.com/Rexagon/kanji-tutor/releases", QUrl::TolerantMode));
+	});
+
+	// Information
 	connect(m_ui->menuItemAbout, &QAction::triggered, this, [this]() {
 		QMessageBox messageBox;
 		messageBox.setWindowTitle("О программе");
-		messageBox.setText("<h3><b>Kanji tutor</b> <small>v1.2</small></h3>");
+		messageBox.setText("<h3><b>Kanji tutor</b> <small>v" + App::getVersion() + "</small></h3>");
 		messageBox.setInformativeText("<p>Небольшой помощник в непростом деле изучения японских иероглифов. С помощью тестов и карточек выучить их будет немного проще.</p>"\
 									  "<p>Все уроки и категории данной программы хранятся как отдельные ресурсы, поэтому при обнаружении каких-то ошибок или неточностей "\
 									  "всё можно исправить самому. Также можно писать и свои уроки. Не стесняйтесь добавлять их в репозиторий.<p><hr>"\

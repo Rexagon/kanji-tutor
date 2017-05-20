@@ -20,7 +20,7 @@ Group::~Group()
 
 QString Group::getName() const
 {
-    return m_name;
+	return m_name;
 }
 
 QString Group::getTitle() const
@@ -37,7 +37,7 @@ std::vector<Category*> Group::getCategories()
 	return result;
 }
 
-unsigned int Group::getCategoriesNum() const
+unsigned int Group::getNumCategories() const
 {
 	return m_categories.size();
 }

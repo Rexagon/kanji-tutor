@@ -16,13 +16,17 @@ public:
 
     QString getName() const;
     std::vector<Lesson*> getLessons();
-	unsigned int getLessonsNum() const;
+	unsigned int getNumLessons() const;
+
+	std::vector<Exercise*> getExercises() const;
 private:
 	Group* m_group;
 	int m_id;
 
     QString m_name;
     std::vector<std::unique_ptr<Lesson>> m_lessons;
+
+	std::vector<std::unique_ptr<Exercise>> m_exercises;
 };
 
 #endif // CATEGORY_H

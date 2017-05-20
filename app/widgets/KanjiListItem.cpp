@@ -52,7 +52,7 @@ KanjiListItem::KanjiListItem(Hieroglyph* hieroglyph, QWidget *parent) : QPushBut
 	gridLayout->addWidget(labelKun, 2, 2, 2, 1);
 
 	// Readings font
-	QFont font(App::getKanaFont(), 12, 50);
+	QFont font(App::getKanaFont(), 14, 50);
 
 	// Onyuomi
 	QString onyomi;
