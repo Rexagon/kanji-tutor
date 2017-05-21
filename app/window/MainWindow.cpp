@@ -95,6 +95,48 @@ void MainWindow::createMenu()
 		}
 	});
 
+	// Kana menu
+	m_hiriganaWindow = new QDialog(this, Qt::WindowSystemMenuHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+	m_hiriganaWindow->resize(400, 200);
+	m_hiriganaWindow->setWindowTitle("Хиригана");
+	QString hirigana = "ん    わ   をらりるれろや ゆ よまみむめもはひふへほなにぬねのたちつてとさしすせそかきくけこあいうえお";
+	QGridLayout* hiriganaLayout = new QGridLayout();
+	m_hiriganaWindow->setLayout(hiriganaLayout);
+	for (int i = 0; i < hirigana.size(); i += 5) {
+		for (int j = 0; j < 5; ++j) {
+			QLabel* label = new QLabel(QString(hirigana[i + j]));
+			label->setFont(QFont(App::getKanaFont(), 15, 50));
+			hiriganaLayout->addWidget(label, j, i, 1, 1);
+		}
+	}
+
+	m_katakanaWindow = new QDialog(this, Qt::WindowSystemMenuHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+	m_katakanaWindow->resize(400, 200);
+	m_katakanaWindow->setWindowTitle("Катакана");
+	QString katakana = "ン    ワ   ヲラリルレロヤ ユ ヨマミムメモハヒフヘホナニヌネノタチツテトサシスセソカキクケコアイウエオ";
+	QGridLayout* katakanaLayout = new QGridLayout();
+	m_katakanaWindow->setLayout(katakanaLayout);
+	for (int i = 0; i < katakana.size(); i += 5) {
+		for (int j = 0; j < 5; ++j) {
+			QLabel* label = new QLabel(QString(katakana[i + j]));
+			label->setFont(QFont(App::getKanaFont(), 15, 50));
+			katakanaLayout->addWidget(label, j, i, 1, 1);
+		}
+	}
+
+
+	connect(m_ui->menuItemHirigana, &QAction::triggered, this, [this]() {
+		if (!m_hiriganaWindow->isVisible()) {
+			m_hiriganaWindow->show();
+		}
+	});
+
+	connect(m_ui->menuItemKatakana, &QAction::triggered, this, [this]() {
+		if (!m_katakanaWindow->isVisible()) {
+			m_katakanaWindow->show();
+		}
+	});
+
     // Help menu
 
 	// Updater

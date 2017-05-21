@@ -808,8 +808,16 @@
     </property>
     <addaction name="menuItemReset"/>
    </widget>
+   <widget class="QMenu" name="menuKana">
+    <property name="title">
+     <string>Кана</string>
+    </property>
+    <addaction name="menuItemHirigana"/>
+    <addaction name="menuItemKatakana"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuProfile"/>
+   <addaction name="menuKana"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="menuItemExit">
@@ -830,6 +838,16 @@
   <action name="menuItemUpdate">
    <property name="text">
     <string>Обновить</string>
+   </property>
+  </action>
+  <action name="menuItemKatakana">
+   <property name="text">
+    <string>Катакана</string>
+   </property>
+  </action>
+  <action name="menuItemHirigana">
+   <property name="text">
+    <string>Хиригана</string>
    </property>
   </action>
  </widget>

@@ -19,6 +19,9 @@ public:
 private:
 	void createMenu();
 
+	QDialog* m_hiriganaWindow;
+	QDialog* m_katakanaWindow;
+
 	Ui::MainWindow* m_ui;
 
 	std::unique_ptr<PageStart> m_pageStart;
